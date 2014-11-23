@@ -1,6 +1,3 @@
--- | Main entry point to the application.
-module Main where
-
 -------------------------------------------------------
 countPeaks [] = 0
 countPeaks xs = length [x| let g  = minimum xs - 1,
