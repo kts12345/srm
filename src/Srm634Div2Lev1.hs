@@ -7,7 +7,7 @@ countPeaks xs = length [x| let g  = minimum xs - 1,
                            let ls = g:xs,
                            let rs = tail xs ++ [g],
                            (l,x,r) <-zip3 ls xs rs,
-                             l < x && x > r]
+                           l < x && x > r]
 -------------------------------------------------------
 -- | The main entry point.
 main :: IO ()
