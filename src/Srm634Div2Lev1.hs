@@ -1,4 +1,5 @@
--------------------------------------------------------
+module Srm634Div2Lev1 where
+
 countPeaks [] = 0
 countPeaks xs = length [x| let g  = minimum xs - 1,
                            let ls = g:xs,
