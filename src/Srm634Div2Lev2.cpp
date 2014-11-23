@@ -1,15 +1,15 @@
--- http://community.topcoder.com/stat?c=problem_statement&pm=13458
+// http://community.topcoder.com/stat?c=problem_statement&pm=13458
 
-#include <vector>        
+#include <vector>
 #include <iostream>
 #include <boost/range/numeric.hpp>
 
-auto minValue = [](int n, std::vector<int> xs)
-{
-  using namespace boost;
-  return std::max(0, accumulate(xs, n, [n](int s, int e){return s-n+e;}));
+int minValue(int n, std::vector<int> xs)
+{  
+  return std::max(0, boost::accumulate(xs, n, [n](int s, int e){return s-n+e;}));
 };
 
+//clang++  -std=c++1y  -ldl -lcxxrt --stdlib=libc++  main.cpp && ./a.out
 int main()
 {
   std::cout<< minValue(5,   {3,3})        << std::endl;
