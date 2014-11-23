@@ -46,7 +46,7 @@ int countPeaks(std::vector<int> xs)
     const auto g  = *std::min_element(begin(xs), end(xs)) - 1;
     const auto ls = add_head(g, xs);
     const auto rs = add_last(tail(xs), g);
-    const auto z3 = zip3(add_head(g, xs), xs, add_last(tail(xs), g));
+    const auto z3 = zip3(ls, xs, rs);
     const auto is_peak = [](auto t) 
     {
         int l, x, r; 
@@ -57,6 +57,7 @@ int countPeaks(std::vector<int> xs)
     return boost::count_if(z3, is_peak);
 }
 
+// clang++  -std=c++1y -ldl -lcxxrt --stdlib=libc++  main.cpp && ./a.out
 int main()
 {
     std::cout<< countPeaks ({5, 6, 2, 4}) << std::endl;
