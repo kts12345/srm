@@ -1,5 +1,5 @@
 module Srm634Div2Lev2 where
-    
+
 minValue n xs = maximum [0, foldl (\s->(\e->e-n+s)) n xs]
 
 -- | The main entry point.
