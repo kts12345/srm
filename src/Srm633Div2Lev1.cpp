@@ -31,22 +31,20 @@ auto print = [](auto&& table)
 //===========================================================
 // Srm633Div2Lev1
 //-----------------------------------------------------------
-auto gen= [](char c, auto n) { return "#" + std::string(n-2, c) +"#"; };
-
-//-----------------------------------------------------------
-
-auto accOp = [](auto&& acc, std::size_t n)
-{
-    return 
-      list_t{ gen('#', n) }    // -- ["###############"]
-    + list_t{ gen(' ', n) }    // -- ["#             #"]
-    + map(acc, [](auto& row) { return "# " + row + " #"; })
-    + list_t{ gen(' ', n) }    // -- ["#             #"]
-    + list_t{ gen('#', n) };   // -- ["###############"]
-};
-
 auto target(std::size_t n)
-{   
+{
+    auto accOp = [](auto&& acc, std::size_t n)
+    {
+        auto gen= [](char c, auto n) { return "#" + std::string(n-2, c) +"#"; };
+        
+        return 
+          list_t{ gen('#', n) }    // -- ["###############"]
+        + list_t{ gen(' ', n) }    // -- ["#             #"]
+        + map(acc, [](auto& row) { return "# " + row + " #"; })
+        + list_t{ gen(' ', n) }    // -- ["#             #"]
+        + list_t{ gen('#', n) };   // -- ["###############"]
+    };
+
     // {5, 9, ..., n/4}
     std::vector<std::size_t> l(n/4);
     std::iota(l.begin(), l.end(), 1);
