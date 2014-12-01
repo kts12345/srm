@@ -6,7 +6,7 @@
 
 int minValue(int n, std::vector<int> xs)
 {  
-  return std::max(0, boost::accumulate(xs, n, [n](int s, int e){return s-n+e;}));
+  return std::max(0, boost::accumulate(xs, n, [n](int acc, int x){return acc-(n-x);}));
 };
 
 //clang++  -std=c++1y  -ldl -lcxxrt --stdlib=libc++  main.cpp && ./a.out
