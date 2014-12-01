@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <numeric>
 
 //-----------------------------------------------------------
 // typedef && Util
@@ -34,21 +35,30 @@ auto gen= [](char c, auto n) { return "#" + std::string(n-2, c) +"#"; };
 
 //-----------------------------------------------------------
 
-auto target(std::size_t n)
+auto accOp = [](auto&& acc, std::size_t n)
 {
-    if (n ==1) 
-        return list_t{ std::string("#") };
-    else
-        return list_t{ gen('#', n) }            // -- ["###############"]
-             + list_t{ gen(' ', n) }            // -- ["#             #"]
-             + map(target(n-4), [](auto& row) { return "# " + row + " #"; })
-             + list_t{ gen(' ', n) }            // -- ["#             #"]
-             + list_t{ gen('#', n) };           // -- ["###############"]
+    return 
+      list_t{ gen('#', n) }    // -- ["###############"]
+    + list_t{ gen(' ', n) }    // -- ["#             #"]
+    + map(acc, [](auto& row) { return "# " + row + " #"; })
+    + list_t{ gen(' ', n) }    // -- ["#             #"]
+    + list_t{ gen('#', n) };   // -- ["###############"]
+};
+
+auto target(std::size_t n)
+{   
+    // {5, 9, ..., n/4}
+    std::vector<std::size_t> l(n/4);
+    std::iota(l.begin(), l.end(), 1);
+    std::transform(l.begin(), l.end(), l.begin(), [](int n) { return 4*n+1;});
+    
+    return std::accumulate(l.begin(), l.end(), list_t{"#"}, accOp);
 }
 
 //-----------------------------------------------------------
 int main()
 {
+    print (list_t{"n=1" } + target (1)  + list_t{"\n"});
     print (list_t{"n=5" } + target (5)  + list_t{"\n"});
     print (list_t{"n=9" } + target (9)  + list_t{"\n"});
     print (list_t{"n=13"} + target (13) + list_t{"\n"});
