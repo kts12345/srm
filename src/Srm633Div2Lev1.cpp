@@ -64,7 +64,7 @@ int main()
 }
 
 //clang++  -std=c++1y  -ldl -lcxxrt --stdlib=libc++  main.cpp && ./a.out
-
+//=======================================================================
 #ifdef OUTPUT
 
 n = 1
