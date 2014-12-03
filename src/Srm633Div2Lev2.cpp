@@ -4,34 +4,46 @@
 #include <vector>
 #include <iostream>
 #include <tuple>
+#include <iterator>
 #include <boost/range/numeric.hpp>
 #include <boost/range/algorithm.hpp>
 
 //===========================================================
 // Srm633Div2Lev2
 //-----------------------------------------------------------
-// <sum, max, able>
-using acc_t = std::tuple<float, float>;
-auto sum  = [](const acc_t& a) { return std::get<0>(a); };
-auto max  = [](const acc_t& a) { return std::get<1>(a); };
+// util
+auto to_float = [](auto x) {return static_cast<float>(x);};
 
+auto map = [](auto xs, auto fn) {
+    std::vector<decltype(fn(xs[0]))> out;
+    boost::transform(xs, std::back_inserter(out), [=](auto& x) { return fn(x); });
+    return out;
+};
+
+//-----------------------------------------------------------
+// helper
+using acc_t = std::tuple<float, float>; // <sum, max>
+auto sum_  = [](const acc_t& a) { return std::get<0>(a); };
+auto max_  = [](const acc_t& a) { return std::get<1>(a); };
+
+//-----------------------------------------------------------
 void jumping_able(int x, int y, std::vector<int>&& jumplengths)
 {
   // make float list 'xs'
-  std::vector<float> xs(jumplengths.size());
-  auto to_float = [](auto x) {return static_cast<float>(x); };
-  boost::transform(jumplengths, xs.begin(), to_float);
+  auto xs = map(jumplengths, to_float);
   xs.emplace_back(to_float(std::sqrt(x*x + y*y)));
 
   // calcuate 'sum' and max'
-  auto acc_op = [](acc_t a, float x) { return acc_t{ sum(a) + x, std::max(max(a), x) }; };
-  auto acc = boost::accumulate(xs, acc_t{ 0.f, 0.f }, acc_op;
+  auto sum = 0.f, max = 0.f;
+  auto acc_op = [](acc_t a, float x) { return acc_t{sum_(a) + x, std::max(max_(a), x) };};
+  std::tie(sum, max) = boost::accumulate(xs, acc_t{sum, max}, acc_op);
 
   // calculate 'able' value
-  auto able = sum(acc) >= 2 * max(acc);
+  auto able = max <= sum - max;
   std::cout << (able ? "Able" : "Not able") << std::endl;
 }
 
+//-----------------------------------------------------------
 int main()
 {
   jumping_able(5, 4, { 2, 5 }); // "Able"
