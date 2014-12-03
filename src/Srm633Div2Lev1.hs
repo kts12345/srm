@@ -2,17 +2,15 @@
 
 module Srm633Div2Lev1 where
 
+accOp acc x = ["#" ++ fill '#' ++ "#"]               -- ["#########"]
+           ++ ["#" ++ fill ' ' ++ "#"]               -- ["#       #"]
+           ++ ["# "++ prev     ++" #" | prev <- acc] -- ["# .acc. #"]
+           ++ ["#" ++ fill ' ' ++ "#"]               -- ["#       #"]
+           ++ ["#" ++ fill '#' ++ "#"]               -- ["#########"]
+         where 
+             fill c = [c|_<-[1..x-2]]                --  "#cc.c.cc#"
 
-target n =  foldl accOp ["#"] [x | x<-[1..n], mod x 4 == 1,  1 < x]
-    where
-        accOp acc n = [gen '#' n               ] -- ["#########"]
-                   ++ [gen ' ' n               ] -- ["#       #"]
-                   ++ ["# "++ x ++" #" | x<-acc] -- ["# .acc. #"]
-                   ++ [gen ' ' n               ] -- ["#       #"]
-                   ++ [gen '#' n               ] -- ["#########"]
-          where
-              gen c n =  "#" ++ take (n-2) (repeat c) ++ "#"
-
+target n =  foldl accOp ["#"] [5,5+4..n]
 
 ------------------------------------------------------------------
 -- | The main entry point.
