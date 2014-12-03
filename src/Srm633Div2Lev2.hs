@@ -1,12 +1,12 @@
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13463
 module Srm633Div2Lev2 where
-
+    
 jumpingAble x y xs = if able then "Able" else "Not able" 
   where 
-       ls   = xs++[sqrt (x*x + y*y)]
-       sum' = sum     ls
-       max' = maximum ls
-       able = sum' >= 2*max'  
+       ls   = xs ++ [sqrt (x*x + y*y)]
+       (sum', max') = foldl (\(s,m) x->(s+x, max m x)) (0.0, 0.0) ls
+       able = max' <= sum'-max'
+
 -----------------------------------------------------------------------    
 -- | The main entry point.
 main :: IO ()
