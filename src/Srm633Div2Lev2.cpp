@@ -12,7 +12,7 @@
 // Srm633Div2Lev2
 //-----------------------------------------------------------
 // util
-auto to_float = [](auto x) {return static_cast<float>(x);};
+auto to_double = [](auto x) {return static_cast<double>(x);};
 
 auto map = [](auto xs, auto fn) {
     std::vector<decltype(fn(xs[0]))> out;
@@ -22,7 +22,7 @@ auto map = [](auto xs, auto fn) {
 
 //-----------------------------------------------------------
 // helper
-using acc_t = std::tuple<float, float>; // <sum, max>
+using acc_t = std::tuple<double, double>; // <sum, max>
 auto sum_  = [](const acc_t& a) { return std::get<0>(a); };
 auto max_  = [](const acc_t& a) { return std::get<1>(a); };
 
@@ -30,12 +30,12 @@ auto max_  = [](const acc_t& a) { return std::get<1>(a); };
 void jumping_able(int x, int y, std::vector<int>&& jumplengths)
 {
   // make float list 'xs'
-  auto xs = map(jumplengths, to_float);
-  xs.emplace_back(to_float(std::sqrt(x*x + y*y)));
+  auto xs = map(jumplengths, to_double);
+  xs.emplace_back(std::sqrt(x*x + y*y));
 
   // calcuate 'sum' and max'
-  auto sum = 0.f, max = 0.f;
-  auto acc_op = [](acc_t a, float x) { return acc_t{sum_(a) + x, std::max(max_(a), x) };};
+  auto sum = 0.0, max = 0.0;
+  auto acc_op  = [](acc_t a, double x) { return acc_t{sum_(a) + x, std::max(max_(a), x) };};
   std::tie(sum, max) = boost::accumulate(xs, acc_t{sum, max}, acc_op);
 
   // calculate 'able' value
