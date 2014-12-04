@@ -7,10 +7,11 @@ accOp acc x = ["##" ++ fill '#' ++ "##"]           -- ["#########"]
            ++ ["# " ++   a      ++ " #"| a <- acc] -- ["# .acc. #"]
            ++ ["# " ++ fill ' ' ++ " #"]           -- ["#       #"]
            ++ ["##" ++ fill '#' ++ "##"]           -- ["#########"]
-           where fill e = [e|_<-[1..x-4]]          -- take (x-4) (repeat e)
+           where fill e = [e|_<-[1..x-4]]          -- replicate (x-4) e
+
 
 target n =  foldl accOp ["#"] [5,5+4..n]
-
+ 
 ------------------------------------------------------------------
 -- | The main entry point.
 main :: IO ()
