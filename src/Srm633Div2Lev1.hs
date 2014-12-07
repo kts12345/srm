@@ -93,7 +93,7 @@ draw n = [row x | x <-[0..n-1]]
 	where
 		toDistance (x,y) = max (abs (x-c)) (abs (y-c)) where c = div (n-1) 2
 		toChar d         = if even d then '#' else ' '
-		row    x         = map toChar $ map toDistance [(x,y)|y<-[0..n-1]]
+		row    x         = map (toChar.toDistance) [(x,y)|y<-[0..n-1]]
 -------------------------------------------------------------------------------------
 buffer count step [] = []
 buffer count step xs = take count xs : buffer count step (drop step xs)
@@ -101,5 +101,5 @@ draw2 n = buffer n n cs
 	where
 		toDistance (x,y) = max (abs (x-c)) (abs (y-c)) where c = div (n-1) 2
 		toChar d         =  if even d then '#' else ' '
-		cs               = map toChar $ map toDistance [(x,y) | y<-[0..n-1], x<-[0..n-1]]
+		cs               = map (toChar.toDistance) [(x,y) | y<-[0..n-1], x<-[0..n-1]]
 -------------------------------------------------------------------------------------
