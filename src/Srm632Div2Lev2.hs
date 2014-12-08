@@ -4,8 +4,8 @@ module Srm632Div2Lev2 where
 
 handler (diff, run) (prev, current) = (newDiff,  newRun)
   where
-    newDiff = current -prev
-    newRun  = if (diff == newDiff) then run + 1 else 2
+    newDiff = current - prev
+    newRun  = if (diff == newDiff) then (run + 1) else 2
 
 numberOfSubsequences xs = sum $ map snd $ scanl handler init zs
   where
