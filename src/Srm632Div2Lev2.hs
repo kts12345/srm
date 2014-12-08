@@ -1,22 +1,31 @@
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13390&rd=16075
--- PotentialGeometricSequence
 module Srm632Div2Lev2 where
- 
---numberOfSubsequences xs = repeat 2 3
-handler (diff,count) (prev, x) = (x - prev, if -prev == diff then count+3 else count + 2)
-toDiff (prev,x) = x-prev
-toCount (prev, x) = if prev == x then 3 else 2
-numberOfSubsequences xs = sum counts
-    where
-       counts = map toCount zip(diffs)
 
-     --  {1 ,    2,     4,     8,     16 }
-     --  {   (1,2), (2,4), (4,8), (8,16) } <= zip
-     --  {       1,     2,     4,      8 } <= toDiff
-     --  {          (1,2),  (2,4), (4,8) } <= zip
-     --  { #1   #2,     2       2      2 } <= toCount
-     
+handler (diff, run) (prev, current) = (newDiff,  newRun)
+  where
+    newDiff = current -prev
+    newRun  = if (diff == newDiff) then run + 1 else 2
+
+numberOfSubsequences xs = sum $ map snd $ scanl handler init zs
+  where
+    zs   = zip (0:xs) xs    -- [(prev, current)] 
+    init = (head xs, 0)     -- (initDiff, initRun)
+
 -- | The main entry point.
 main :: IO ()
 main = do
-    print $ 4
+    print $ numberOfSubsequences [0,1,2]
+    print $ numberOfSubsequences [1,2,4]
+    print $ numberOfSubsequences [3,2,1,0]
+    print $ numberOfSubsequences [1,2,4,8,16]
+    print $ numberOfSubsequences [1,3,5,5,5,5,64,4,23,2,3,4,5,4,3]
+
+{-| Output 
+
+6
+5
+10
+9
+37
+
+-}
