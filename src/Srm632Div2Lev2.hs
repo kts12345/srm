@@ -1,16 +1,20 @@
+-- Srm632Div2Lev2 PotentialGeometricSequence
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13390
 
 module Srm632Div2Lev2 where
 
+---------------------------------------------------------
 handler (diff, run) (prev, current) = (newDiff,  newRun)
   where
     newDiff = current - prev
     newRun  = if (diff == newDiff) then (run + 1) else 2
 
-numberOfSubsequences xs = sum $ map snd $ scanl handler init zs
-  where
-    zs   = zip (0:xs) xs    -- [(prev, current)] 
-    init = (head xs, 0)     -- (initDiff, initRun)
+---------------------------------------------------------
+numberOfSubsequences (x:xs) = sum $
+                              map snd $
+                              scanl handler (x,0) $
+                              zip (0:x:xs) (x:xs) -- [(prev, current)]
+---------------------------------------------------------
 
 -- | The main entry point.
 main :: IO ()
