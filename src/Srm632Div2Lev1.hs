@@ -9,7 +9,7 @@ handler (prev, cur) = prev >= cur
 ------------------------------------------------------
 numberOfLap n xs = length $
                    filter handler $
-                   zip (n:xs) xs -- [(prev, cur)]
+                   zip (n+1:xs) xs -- [(prev, cur)]
 
 ------------------------------------------------------
 -- | The main entry point.
