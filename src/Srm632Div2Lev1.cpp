@@ -80,7 +80,7 @@ bool handler(const prev_cur_t event)
 int number_of_lap(int n, const std::vector<int>& xs)
 {
   return filter(handler, 
-                zip(list_t{n + 1} +xs, xs)
+                zip(list_t{n + 1} +xs, xs))
         .size();
 }
 
