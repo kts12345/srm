@@ -1,4 +1,5 @@
--- http://community.topcoder.com/stat?c=problem_statement&pm=13390&rd=16075
+-- http://community.topcoder.com/stat?c=problem_statement&pm=13390
+
 module Srm632Div2Lev2 where
 
 handler (diff, run) (prev, current) = (newDiff,  newRun)
@@ -20,12 +21,10 @@ main = do
     print $ numberOfSubsequences [1,2,4,8,16]
     print $ numberOfSubsequences [1,3,5,5,5,5,64,4,23,2,3,4,5,4,3]
 
-{-| Output 
-
+{-| Output
 6
 5
 10
 9
 37
-
 -}
