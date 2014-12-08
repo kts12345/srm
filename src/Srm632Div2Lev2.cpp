@@ -74,6 +74,10 @@ namespace haskell {
 
 } // end of namespace haskell
 
+using namespace haskell;
+using namespace boost;
+using namespace boost::adaptors;
+  
 //--------------------------------------------------------------
 // typedef 
 
@@ -81,13 +85,11 @@ using list_t = std::vector<int>;
 
 // diff_run_t  := <diff, run_length>
 using diff_run_t = std::tuple < int, int >;
-auto diff(const diff_run_t& val) { return std::get<0>(val); };
-auto run (const diff_run_t& val) { return std::get<1>(val); };
+auto  run_length(const diff_run_t& val) { return std::get<1>(val); };
 
 // prev_cur_t := <previous, current>
 using prev_cur_t = std::tuple < int, int >;
-auto prev(const prev_cur_t& val) { return std::get<0>(val); };
-auto cur (const prev_cur_t& val) { return std::get<1>(val); };
+
 
 //---------------------------------------------------------------
 // event handler
@@ -106,17 +108,10 @@ diff_run_t handler(const diff_run_t& acc, const prev_cur_t event)
 // composition
 int number_of_subsequences(const std::vector<int>& xs)
 {
-  using namespace haskell;
-  using namespace boost;
-  using namespace boost::adaptors;
-
-  const auto zs   = zip(list_t{0} + xs, xs);  //  [(prev, current)]
-
-  const auto diff = head(xs);  // init_diff
-  const auto run  = 0;         // init_run
-
-  return accumulate(scanl(handler, diff_run_t{diff, run}, zs)
-                    | transformed(cur)
+  return accumulate(scanl(handler, 
+                          diff_run_t{head(xs), 0}, // (init_diff, init_run)
+                          zip(list_t{0} + xs, xs)) // [(prev, current)]
+                    | transformed(run_length)
                     , 0);
 }
 
