@@ -89,7 +89,7 @@ using prev_cur_t = std::tuple < int, int >;
 
 //---------------------------------------------------------------
 // event handler
-diff_run_t handler(const diff_run_t& acc, const prev_cur_t event)
+diff_run_t handler(const diff_run_t& acc, const prev_cur_t& event)
 {
   int diff, run; std::tie(diff, run) = acc;
   int prev, cur; std::tie(prev, cur) = event;
