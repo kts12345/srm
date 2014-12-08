@@ -69,7 +69,7 @@ using prev_cur_t = std::tuple < int, int >;
 
 //---------------------------------------------------------------
 // event handler
-bool handler(const prev_cur_t event)
+bool handler(const prev_cur_t& event)
 {
   int prev, cur; std::tie(prev, cur) = event;
   return prev >= cur;
