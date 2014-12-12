@@ -5,15 +5,14 @@ import Control.Monad
 ------------------------------------------------------
 cJust value cond = if cond then Just value else Nothing
 ------------------------------------------------------
-handlerS  start (low, high, cnt) = cJust (end'+1) (end' <= high)
-    where (start',end') = (max start low, start' + cnt-1)
+handlerS  prev_end (lower,upper,cnt) = cJust end (end<=upper)
+    where (start,end) = (max (prev_end+1) lower, start+cnt-1)
 ------------------------------------- -----------------
-handler (time,xs) (pos,cnt) = cJust  (time,xs') $
-                              isJust (foldM handlerS (-2001) xs')
-  where xs' = sort $ xs++[(pos-time,pos+time,cnt)]
+handler xs (time,pos,cnt) = cJust xs' $ isJust (foldM handlerS (-2001) xs')
+    where xs' = insert (pos-time, pos+time, cnt) xs  -- if xs is sorted then xs' is sorted!! see insert
 ------------------------------------------------------
-catsOnTheLine ps cs time = if possible then "Possible" else "ImPossible"
-    where possible = isJust $ foldM handler (time, []) $ zip ps cs
+catsOnTheLine ps cs time = if move then "Possible" else "ImPossible"
+    where move = isJust $ foldM handler [] $ zip3 [time,time..] ps cs
 ------------------------------------------------------
 main = do
         print $ catsOnTheLine [0] [7] 3
