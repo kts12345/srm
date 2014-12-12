@@ -3,7 +3,7 @@
 module Srm631Div2Lev1 where
 ------------------------------------------------------
 handler (cnts,maxs) (prvs,nows) = (cnts', zipWith max cnts' maxs)
-   where cnts' = zipWith3 (\p n c-> if p==n then c+1 else 1) prvs nows cnts
+   where cnts' = zipWith3 (\p n c -> if p==n then c+1 else 1) prvs nows cnts
 ------------------------------------------------------
 taroGrid (x:xs) = maximum $ snd $ foldl handler ([0,0..],[0,0..]) $ zip (x:x:xs) (x:xs)
 ------------------------------------------------------
