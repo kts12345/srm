@@ -3,11 +3,13 @@ module Srm631Div2Lev1 where
 import Data.List
 
 ------------------------------------------------------
-handler(counts, prevs) nows = (map update $ zip3 counts prevs nows, nows)
-  where update(count, prev, now) = if prev == now then count + 1 else 1 
+handler(maxs, counts, prevs) nows = (nowMaxs, nowCounts, nows)
+  where nowCounts = map update $ zip3 counts prevs nows
+            where update (count, prev, now) = if prev == now then count + 1 else 1
+        nowMaxs   = map max $ zip maxs nowCounts    
 ------------------------------------------------------
-taroGrid (x:xs) = maximum $ fst $ foldl handler init xs
-  where init = (replicate (length x) 1, x)
+taroGrid (x:xs) = maximum $ snd $ foldl handler init xs
+  where init = (replicate (length x) 0, replicate (length x) 1, x)
 ------------------------------------------------------
 -- | The main entry point.
 main :: IO ()
