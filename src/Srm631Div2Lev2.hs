@@ -5,8 +5,8 @@ import Control.Monad
 ------------------------------------------------------
 cJust value cond = if cond then Just value else Nothing
 ------------------------------------------------------
-handlerS  prev_end (lower,upper,cnt) = cJust end (end<=upper)
-    where (start,end) = (max (prev_end+1) lower, start+cnt-1)
+handlerS  prev_end (lo,hi,cnt) = cJust end (end<=hi)
+    where (start,end) = (max (prev_end+1) lo, start+cnt-1)
 ------------------------------------- -----------------
 handler xs (time,pos,cnt) = cJust xs' $ isJust (foldM handlerS (-2001) xs')
     where xs' = insert (pos-time, pos+time, cnt) xs  -- if xs is sorted then xs' is sorted!! see insert
