@@ -1,4 +1,4 @@
--- Srm632Div2Lev1 TaroGrid
+-- Srm631Div2Lev1 TaroGrid
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13394
 module Srm631Div2Lev1 where
 ------------------------------------------------------
