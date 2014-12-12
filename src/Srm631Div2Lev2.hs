@@ -3,21 +3,17 @@ import Data.Maybe
 import Data.List
 import Control.Monad
 ------------------------------------------------------
-cJust v cond = if cond then Just v else Nothing
+cJust value cond = if cond then Just value else Nothing
 ------------------------------------------------------
-handlerS (time, start) (pos, cnt) = cJust (time,end'+1) possible
-  where  (low,   high) = (pos-time, pos+time)
-         (start',end') = (max start low, start' + cnt-1)  
-         possible      = end' <= high
+handlerS  start (low, high, cnt) = cJust (end'+1) (end' <= high)
+    where (start',end') = (max start low, start' + cnt-1)
 ------------------------------------- -----------------
-handler (time,xs) (p,c) = cJust (time,xs ++ [(p,c)])   $
-                          isJust                       $
-                          foldM handlerS (time, -2001) $ 
-                          sort                         $ 
-                          xs ++ [(p,c)] 
+handler (time,xs) (pos,cnt) = cJust  (time,xs') $
+                              isJust (foldM handlerS (-2001) xs')
+  where xs' = sort $ xs++[(pos-time,pos+time,cnt)]
 ------------------------------------------------------
 catsOnTheLine ps cs time = if possible then "Possible" else "ImPossible"
-  where possible = isJust $ foldM handler (time, []) $ zip ps cs
+    where possible = isJust $ foldM handler (time, []) $ zip ps cs
 ------------------------------------------------------
 main = do
         print $ catsOnTheLine [0] [7] 3
