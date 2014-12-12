@@ -1,20 +1,20 @@
 module Srm631Div2Lev1 where
 
-import Data.List
-
 ------------------------------------------------------
-handler(maxs, counts, prevs) nows = (nowMaxs, nowCounts, nows)
-  where nowCounts = map update $ zip3 counts prevs nows
-            where update (count, prev, now) = if prev == now then count + 1 else 1
-        nowMaxs   = map max $ zip maxs nowCounts    
+handler (counts, maxs) (prevs, nows) = (counts',maxs')
+  where counts' = zipWith3 (\c p n -> if p ==n then c+1 else 1) counts prevs nows
+        maxs'   = zipWith max maxs counts'
 ------------------------------------------------------
-taroGrid (x:xs) = maximum $ snd $ foldl handler init xs
-  where init = (replicate (length x) 0, replicate (length x) 1, x)
+taroGrid xs =
+    maximum $ snd $ foldl handler init $ zip (['U','U'..]:xs) xs 
+     -- where init = ((replicate (length x) 1), (replicate (length x) 0), x)
+          where init = ([0,0..], [0,0..])
 ------------------------------------------------------
 -- | The main entry point.
 main :: IO ()
 main = do
-    print $ taroGrid ["W"]    
+  --   print $ (\(_,s,_)-> s) ([1,1..], [0,0..], "B")
+  --  print $ taroGrid ["W"]    
     print $ taroGrid ["WB", "BW"]    
     print $ taroGrid ["BWW", "BBB", "BWB"]    
     print $ taroGrid ["BWBW", "BBWB", "WWWB", "BWWW"]
