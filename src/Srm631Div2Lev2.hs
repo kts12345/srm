@@ -16,7 +16,7 @@ handler' events evt  = cJust isPossible events'
           isPossible = isJust $ foldM_ handler [-2001] events'
 ------------------------------------------------------
 catsOnTheLine ps cs time = toString $ foldM_ handler' [] events
-    where events     = sort [(p-time, p+time, cnt)|(p,cnt)<-zip ps cs]
+    where events     =  [(p-time, p+time, cnt)|(p,cnt)<-zip ps cs]
           toString v = if isJust v then "Possible" else "Impossible"
 ------------------------------------------------------
 main = do
