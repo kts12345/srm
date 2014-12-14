@@ -2,13 +2,14 @@
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13394
 module Srm631Div2Lev1 where
 ------------------------------------------------------
-handler (cnts,maxs) (prvs,nows) = (cnts', zipWith max cnts' maxs)
-   where cnts' = zipWith3 (\p n c -> if p==n then c+1 else 1) prvs nows cnts
+handler (cnts,maxs,prevs) nows = (cnts',maxs',nows)
+   where cnts' = zipWith3 (\p n c -> if p==n then c+1 else 1) prevs nows cnts
+         maxs' = zipWith max cnts' maxs
 ------------------------------------------------------
-taroGrid (x:xs) = maximum $ snd $ foldl handler ([0,0..],[0,0..]) $ zip (x:x:xs) (x:xs)
+taroGrid xs = maximum $ (\(_,m,_)->m) $ foldl handler ([0,0..],[0,0..],head xs) xs
 ------------------------------------------------------
 main = do
-    print $ taroGrid ["W"]  
+    print $ taroGrid ["W"]
     print $ taroGrid ["WB", "BW"]    
     print $ taroGrid ["BWW", "BBB", "BWB"]    
     print $ taroGrid ["BWBW", "BBWB", "WWWB", "BWWW"]
