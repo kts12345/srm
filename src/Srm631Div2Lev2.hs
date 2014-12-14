@@ -5,16 +5,19 @@ import Data.Maybe
 import Data.List
 import Control.Monad
 ------------------------------------------------------
-cJust value cond = if cond then Just value else Nothing
+cJust cond value = if cond then (Just value) else Nothing
 ------------------------------------------------------
-handlerS  prev_end (lo,hi,cnt) = cJust end (end<=hi)
+handlerS prev_end (lo,hi,cnt) = cJust isPossible end
     where (start,end) = (max (prev_end+1) lo, start+cnt-1)
+          isPossible  = end <= hi
 ------------------------------------- -----------------
-handler xs (time,pos,cnt) = cJust xs' $ isJust (foldM handlerS (-2001) xs')
-    where xs' = insert (pos-time, pos+time, cnt) xs  -- if xs is sorted then xs' is sorted!! see insert
+handler xs x  = cJust isPossible xs'
+    where xs'        = insert x xs  -- if xs is sorted then xs' is sorted!! see insert
+          isPossible = isJust $ foldM handlerS (-2001) xs'
 ------------------------------------------------------
-catsOnTheLine ps cs time = if move then "Possible" else "ImPossible"
-    where move = isJust $ foldM handler [] $ zip3 [time,time..] ps cs
+catsOnTheLine ps cs time = toString $ foldM handler [] events
+    where events     = [(p-time, p+time, cnt)|(p,cnt)<-zip ps cs]
+          toString v = if isJust v then "Possible" else "Impossible"
 ------------------------------------------------------
 main = do
         print $ catsOnTheLine [0] [7] 3
