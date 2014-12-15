@@ -34,9 +34,9 @@ main = do
 "Possible"
 -}
 
--------------------------------------------------------
+-- ======================================================
 -- need optimiazation setting ? see below
-------------------------------------- -----------------
+-- ------------------------------------ -----------------
 handlerOpt (ends,events) evt  = cJust isPossible (ends',events')
     where prevEvents  = [e|e<-events, e < evt]
           prevEnds    = take (length prevEvents) ends
@@ -51,4 +51,11 @@ catsOnTheLineOpt ps cs time = toString $ foldM_ handlerOpt init events
           toString v = if isJust v then "Possible" else "Impossible"
           init = ([-2001], [(-2001,-2001,0)])
 ------------------------------------------------------
+
+-- ======================================================
+-- need synchronous simple setting ? see below
+-- ------------------------------------ -----------------
+catsOnTheLineSync ps cs time = toString $ foldM_ handler [-2001] events
+    where events     =  sort [(p-time, p+time, cnt)|(p,cnt)<-zip ps cs]
+          toString v = if isJust v then "Possible" else "Impossible"
 
