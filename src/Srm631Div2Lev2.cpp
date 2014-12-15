@@ -1,14 +1,10 @@
 //--Srm631Div2Lev2 catsOnTheLine
 //-- http://community.topcoder.com/stat?c=problem_statement&pm=13392
 
-#include <cmath>
 #include <vector>
 #include <iostream>
 #include <tuple>
-#include <iterator>
 #include <string>
-#include <boost/range/numeric.hpp>
-#include <boost/range/algorithm.hpp>
 #include <boost/optional.hpp>
 
 
