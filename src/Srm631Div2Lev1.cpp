@@ -1,13 +1,12 @@
 //-- Srm631Div2Lev1 TaroGrid
 //-- http://community.topcoder.com/stat?c=problem_statement&pm=13394
 
-#include <cmath>
 #include <vector>
 #include <iostream>
 #include <tuple>
 #include <iterator>
-#include <boost/range/numeric.hpp>
-#include <boost/range/algorithm.hpp>
+#include <algorithm>
+#include <numeric>
 
 namespace haskell {
 auto zipwith3 = [](auto op, const auto& x1, const auto& x2, const auto& x3)
