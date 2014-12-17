@@ -5,7 +5,7 @@ module Srm630Div2Lev1 where
 handler []          evt = [evt]         -- push
 handler (top:stack) evt
            | top == evt = (stack)       -- pop
-           | otherwise  = (evt:h:stack) -- push
+           | otherwise  = (evt:top:stack) -- push
 ------------------------------------------------------
 doubleLetter xs = if [] == foldl handler [] xs then "Possible" else "Impossible"
 ------------------------------------------------------
@@ -17,6 +17,7 @@ main = do
     print $ doubleLetter "aaaaaaaaaa"
     print $ doubleLetter "aababbabbaba"
     print $ doubleLetter "zzxzxxzxxzzx"
+
 {- Output
 "Possible"
 "Impossible"
