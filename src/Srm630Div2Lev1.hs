@@ -1,5 +1,5 @@
 -- Srm630Div2Lev1 DoubleLetter
--- http://community.topcoder.com/stat?c=problem_statement&pm=13378&rd=16061
+-- http://community.topcoder.com/stat?c=problem_statement&pm=13378
 module Srm630Div2Lev1 where
 ------------------------------------------------------
 handler []          evt = [evt]         -- push
