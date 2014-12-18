@@ -4,7 +4,6 @@ module Srm630Div2Lev2 where
 import Data.List
 import Control.Arrow
 import qualified Data.Map as M
-
 ------------------------------------------------------
 frequency xs = map (head &&& length) $ group $ sort xs 
 ------------------------------------------------------
