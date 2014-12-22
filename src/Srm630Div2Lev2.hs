@@ -4,7 +4,10 @@ module Srm630Div2Lev2 where
 import Data.List
 import Control.Arrow
 import qualified Data.Map.Strict as M
-import qualified Data.Set as Set
+import qualified Data.Set as S
+------------------------------------------------------
+addToCluster []          (t,u,d) = [(t,u,d)]
+addToCluster (e:cluster) (t,u,d) = if ()
 ------------------------------------------------------
 frequency :: [(Int,Int)]->[((Int,Int),Int)]
 frequency xs         = map (head &&& length) $ group $ sort xs
@@ -40,6 +43,7 @@ egalitarianism3Easy n xs ys lengths
     | otherwise = snd $ foldl handler ([],[]) $ zip3 xs ys lengths -- maximum $ map snd $ fst $ foldl handler ([],[]) $ zip3 xs ys lengths
 ------------------------------------------------------
 main = do
+    print $ S.Set[(2,3)]
     print $ egalitarianism3Easy 4  [1,1,1]
                                    [2,3,4]
                                    [1,1,1]
