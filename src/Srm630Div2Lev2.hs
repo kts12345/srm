@@ -41,11 +41,7 @@ egalitarianism3Easy n xs ys lengths
                   foldl handler ([], M.empty) $ --- last state = (clusters, pathTable)
                   zip3 xs ys lengths            --- pathInfos  = [(a,b,l)]
 ------------------------------------------------------
-double x = x + x
-add3   x = x + 3
 main = do
---    print $ ^ (a,b)
-    print $ (add3.double)  2
     print $ egalitarianism3Easy 4  [1,1,1]
                                    [2,3,4]
                                    [1,1,1]
