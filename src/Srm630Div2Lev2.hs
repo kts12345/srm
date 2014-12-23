@@ -20,15 +20,12 @@ updateClusters clusters nodes table = newClusters
                 sameDist n'    = elem (Just dist) [lookup (n,n'), lookup (n',n)]
                 expandNode   = if all sameDist nodes then [n] else []
 ------------------------------- -----------------------
-findNewPaths :: M.Map (Int,Int) Int -> ((Int,Int), Int) -> [((Int,Int), Int)]
-findNewPaths table path = newPaths
-  where ((a,b),l) = path
-        newPaths  = [((a,b),l)] ++ add (a,b) ++ add (b,a)
+findNewPaths table path = [((a,b),l)] ++ add (a,b) ++ add (b,a)
+  where (ps, ((a,b),l)) = (M.toList table, path)           -- input parameter decoding
         add (a,b) = [((a,u),l+d)|((t,u),d)<-ps, t==b]      -- (a,    b=t,..u       ) => (a,u  )
                  ++ [((t,b),d+l)|((t,u),d)<-ps, u==a]      -- (        t,..u=a,  b ) => (t,b  )
                  ++ [((t1,u2),d1+l+d2)|((t1, u1), d1)<-ps, -- (t1,..u1=a,  b=t2..u2) => (t1,u2)
                                        ((t2, u2), d2)<-ps, u1==a && t2==b]
-        ps = M.toList table
 ------------------------------------------------------
 handler (clusters, table) path = (newClusters, newTable)
   where newPaths    = findNewPaths table path                      -- 1. find new paths
@@ -39,12 +36,12 @@ handler (clusters, table) path = (newClusters, newTable)
 ------------------------------------------------------
 egalitarianism3Easy n xs ys lengths
     | n <= 2    = n
-    | otherwise = maximum                     $ --- 6. max size   = maximum [nodesize]
-                  map (length.snd)            $ --- 5. node sizes = [nodesize] = [length [nodes]]
-                  fst                         $ --- 4. clusters   = [cluster]  = [(distance,[nodes])]
-                  foldl handler ([], M.empty) $ --- 3. last state = (clusters, pathTable)
-                  map (\(x,y,l)->((x,y),l))   $ --- 2. paths      = [((a,b),l)]
-                  zip3 xs ys lengths            --- 1. pathInfos  = [( a,b, l)]
+    | otherwise = maximum                     $ --- 6. max size      = maximum [cluster size]
+                  map (length.snd)            $ --- 5. cluster sizes = [cluster size] = [length [nodes]]
+                  fst                         $ --- 4. clusters      = [cluster]  = [(distance,[nodes])]
+                  foldl handler ([], M.empty) $ --- 3. last state    = (clusters, pathTable)
+                  map (\(x,y,l)->((x,y),l))   $ --- 2. paths         = [((a,b),l)]
+                  zip3 xs ys lengths            --- 1. pathInfos     = [( a,b, l)]
 ------------------------------------------------------
 main = do
     print $ egalitarianism3Easy 4  [1,1,1]
