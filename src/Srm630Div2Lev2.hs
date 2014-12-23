@@ -20,11 +20,11 @@ updateClusters clusters nodes table = newClusters
                 sameDist n'    = elem (Just dist) [lookup (n,n'), lookup (n',n)]
                 expandNode   = if all sameDist nodes then [n] else []
 ------------------------------- -----------------------
-findNewPaths table path = [((a,b),l)] ++ add (a,b) ++ add (b,a)
+findNewPaths table path = [path] ++ connect (a,b) ++ connect (b,a)
   where (ps, ((a,b),l)) = (M.toList table, path)           -- input parameter decoding
-        add (a,b) = [((a,u),l+d)|((t,u),d)<-ps, t==b]      -- (a,    b=t,..u       ) => (a,u  )
-                 ++ [((t,b),d+l)|((t,u),d)<-ps, u==a]      -- (        t,..u=a,  b ) => (t,b  )
-                 ++ [((t1,u2),d1+l+d2)|((t1, u1), d1)<-ps, -- (t1,..u1=a,  b=t2..u2) => (t1,u2)
+        connect (a,b) = [((a,u),l+d)|((t,u),d)<-ps, t==b]      -- add begin : (a,    b=t,..u       ) => (a,u  )
+                     ++ [((t,b),d+l)|((t,u),d)<-ps, u==a]      -- add end   : (        t,..u=a,  b ) => (t,b  )
+                     ++ [((t1,u2),d1+l+d2)|((t1, u1), d1)<-ps, -- add mid   : (t1,..u1=a,  b=t2..u2) => (t1,u2)
                                        ((t2, u2), d2)<-ps, u1==a && t2==b]
 ------------------------------------------------------
 handler (clusters, table) path = (newClusters, newTable)
