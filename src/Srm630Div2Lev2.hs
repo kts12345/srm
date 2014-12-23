@@ -85,7 +85,7 @@ main = do
     print $ egalitarianism3Easy 1  [] [] []
 
 
-{- Expected Output
+{-  Output
 3
 3
 9
