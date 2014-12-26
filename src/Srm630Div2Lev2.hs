@@ -34,14 +34,14 @@ handler (clusters, table) path = (newClusters, newTable)
         clusters'   = updateClusters clusters checkNodes newTable  -- 4. update old clusters with toBeChecked nodes
         newClusters = clusters' ++ [(d,[a,b])|((a,b),d)<-newPaths] -- 5. add trivial clusters
 ------------------------------------------------------
-egalitarianism3Easy n xs ys lengths
+egalitarianism3Easy n as bs lens
     | n <= 2    = n
     | otherwise = maximum                     $ --- 6. max size      = maximum [cluster size]
                   map (length.snd)            $ --- 5. cluster sizes = [cluster size] = [length [nodes]]
                   fst                         $ --- 4. clusters      = [cluster]  = [(distance,[nodes])]
                   foldl handler ([], M.empty) $ --- 3. last state    = (clusters, pathTable)
-                  map (\(x,y,l)->((x,y),l))   $ --- 2. paths         = [((a,b),l)]
-                  zip3 xs ys lengths            --- 1. pathInfos     = [( a,b, l)]
+                  map (\(a,b,l)->((a,b),l))   $ --- 2. paths         = [((a,b),l)]
+                  zip3 as bs lens               --- 1. pathInfos     = [( a,b, l)]
 ------------------------------------------------------
 main = do
     print $ egalitarianism3Easy 4  [1,1,1]
