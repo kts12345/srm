@@ -3,7 +3,6 @@
 
 #include <string>
 #include <stack>
-#include <numeric>
 #include <iostream>
 #include <boost/range/numeric.hpp>
 
