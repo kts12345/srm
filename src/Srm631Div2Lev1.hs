@@ -6,12 +6,14 @@ handler (cnts,maxs,prevs) nows = (cnts',maxs',nows)
    where cnts' = zipWith3 (\p n c -> if p==n then c+1 else 1) prevs nows cnts
          maxs' = zipWith max cnts' maxs
 ------------------------------------------------------
-taroGrid xs = maximum $ (\(_,m,_)->m) $ foldl handler ([0,0..],[0,0..],['X','X'..]) xs
+taroGrid xs = maximum $
+             (\(_,m,_)->m) $
+             foldl handler ([0,0..],[0,0..],['X','X'..]) xs
 ------------------------------------------------------
 main = do
     print $ taroGrid ["W"]
-    print $ taroGrid ["WB", "BW"]    
-    print $ taroGrid ["BWW", "BBB", "BWB"]    
+    print $ taroGrid ["WB", "BW"]
+    print $ taroGrid ["BWW", "BBB", "BWB"]
     print $ taroGrid ["BWBW", "BBWB", "WWWB", "BWWW"]
     print $ taroGrid ["BWB", "BBW", "BWB"] 
     print $ taroGrid ["BBWWBBWW", "BBWWBBWW", "WWBBWWBB", "WWBBWWBB", "BBWWBBWW", "BBWWBBWW", "WWBBWWBB", "WWBBWWBB"]
