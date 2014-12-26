@@ -10,8 +10,8 @@ handler (diff, run) (prev, current) = (newDiff,  newRun)
     newRun  = if (diff == newDiff) then (run + 1) else 2
 
 ---------------------------------------------------------
-numberOfSubsequences (x:xs) = sum $
-                              map snd $
+numberOfSubsequences (x:xs) = sum                 $
+                              map snd             $
                               scanl handler (x,0) $
                               zip (0:x:xs) (x:xs) -- [(prev, current)]
 ---------------------------------------------------------

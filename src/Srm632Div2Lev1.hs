@@ -7,7 +7,7 @@ module Srm632Div2Lev1 where
 handler (prev, cur) = prev >= cur
 
 ------------------------------------------------------
-numberOfLap n xs = length $
+numberOfLap n xs = length         $
                    filter handler $
                    zip (n+1:xs) xs -- [(prev, cur)]
 
