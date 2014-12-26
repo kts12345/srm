@@ -3,7 +3,6 @@
 
 #include <string>
 #include <stack>
-#include <numeric>
 #include <iostream>
 #include <boost/range/numeric.hpp>
 
@@ -45,3 +44,14 @@ int main()
   print(doubleLetter("aababbabbaba"));
   print(doubleLetter("zzxzxxzxxzzx"));
 }
+//clang++  -std=c++1y  -ldl -lcxxrt --stdlib=libc++  main.cpp && ./a.out
+/*
+output
+Possible
+Impossibel
+Possible
+Impossibel
+Possible
+Impossibel
+Possible
+*/
