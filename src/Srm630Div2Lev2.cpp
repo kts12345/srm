@@ -1,13 +1,14 @@
 // Srm630Div2Lev2 Egalitarianism3Easy
 // http://community.topcoder.com/stat?c=problem_statement&pm=13376
-
+#include <iostream>
 #include <string>
 #include <map>
 #include <vector>
+#include <boost/iterator/zip_iterator.hpp>
 #include <boost/algorithm/cxx11/all_of.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/range/numeric.hpp>
-#include <boost/iterator/zip_iterator.hpp>
+#include <boost/range/algorithm/max_element.hpp>
 
 using path_t     = std::pair<std::pair<int, int>, int>;
 using table_t    = std::map<std::pair<int, int>, int>;
@@ -22,7 +23,7 @@ auto update_clusters = [](clusters_t& clusters, std::vector<int> nodes, table_t&
       {
         auto it = table.find(std::make_pair(n, n2));
         if (it == table.end())
-          it == table.find(std::make_pair(n2, n));
+          it = table.find(std::make_pair(n2, n));
         if (it == table.end())
           return false;
         return it->second == cluster.first;
@@ -108,14 +109,52 @@ auto egalitarianism3_easy = [](int n, const std::vector<int>& as,
   if (n <= 2)
     return n;
 
-  auto begin = boost::make_zip_iterator(std::make_tuple(as.begin(), bs.begin(), lens.begin()));
-  auto end   = boost::make_zip_iterator(std::make_tuple(as.end(), bs.end(), lens.end()));
+  auto begin = boost::make_zip_iterator(boost::make_tuple(as.begin(), bs.begin(), lens.begin()));
+  auto end   = boost::make_zip_iterator(boost::make_tuple(as.end(),   bs.end(),   lens.end()));
   std::vector<path_t> pathinfos;
-  std::transform(begin, end, std::back_inserter(pathinfos), [](auto& t) { return path_t{( {std::get<0>(t), std::get<1>(t)},std::get<2>(t) } }
+  std::transform(begin, end, std::back_inserter(pathinfos), 
+  [](const boost::tuple<const int&, const int&, const int&>& t) {
+      return path_t{{t.get<0>(), t.get<1>()}, t.get<2>() };
+  });
+  
+  auto clusters = boost::accumulate(pathinfos, std::make_pair(clusters_t{}, table_t{}),handler).first;
+  
+  std::vector<int> sizes;
+  boost::transform(clusters, std::back_inserter(sizes), [](auto& cluster)
+  { return cluster.second.size(); });
 
+  return *boost::max_element(sizes);
 };
 
 int main()
 {
+  auto print = [](const auto& val) { std::cout << val << std::endl; };
+  
+  print(egalitarianism3_easy(4,  {1,1,1}, 
+                                 {2,3,4}, 
+                                 {1,1,1}));
+                                 
+  print(egalitarianism3_easy(6,  {1,2,4,2,3},
+                                 {2,5,3,3,6},
+                                 {2,2,3,1,3}));
+                                 
+  print(egalitarianism3_easy(10, {1,1,1,1,1,1,1,1,1},
+                                 {2,3,4,5,6,7,8,9,10},
+                                 {1000,1000,1000,1000,1000,1000,1000,1000,1000}));
+                                   
+  print(egalitarianism3_easy(2,  {1},
+                                 {2},
+                                 {3}));
 
+  print(egalitarianism3_easy(1, {},
+                                {},
+                                {}));
 }
+
+/*  Output
+3
+3
+9
+2
+1
+*/
