@@ -20,7 +20,7 @@ candyMaking containerVolumes desiredWeights = last diffsum
       diffsum =                                  -----------------------------------------------------------------
         map        handlerFindDiffsum         $    -- 5.|O(n),E(n/2)| O(n)  | [sum (optimal-density)*volume]
         map        handlerFindOptimal         $    -- 4.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], optimal)]     where optimal     = median
-        tail.scanl handlerUpdateTable ([],0)  $    -- 3.|O(log n)   | O(n)  | [(sort [(density, volume)], totalVolume)] where totalVolume = sum [volume]
+        tail.scanl handlerUpdateTable ([],0)  $    -- 3.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], totalVolume)] where totalVolume = sum [volume]
         map        (\(v,w)->(w/v, v))         $    -- 2.|O(1)       | O(1)  | [(density, volume)]                       where density     = weight/volume
         zip        containerVolumes desiredWeights -- 1.|O(1)       | O(1)  | [(volume, weight)]
 ------------------------------------------------------
