@@ -39,7 +39,7 @@ main = do
 -}
 
 ------------------------------------------------------
--- if you need more simple code for batch-job
+-- if you need more simple code for batch-job. O(n)
 candyMaking' containerVolumes desiredWeights = diffsum
     where  inputs      = sort     $ zipWith  (\v w->(w/v, v)) containerVolumes desiredWeights
            volumeTotal = sum      $ map snd inputs
