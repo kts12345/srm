@@ -42,6 +42,6 @@ main = do
 -- if you need more simple code for batch-job. O(n)
 candyMaking' containerVolumes desiredWeights = diffsum
     where  inputs      = sort     $ zipWith  (\v w->(w/v, v)) containerVolumes desiredWeights
-           volumeTotal = sum      $ map snd inputs
-           optimal     = fst.head $ dropWhile (\(_,s) -> s < volumeTotal/2) $ scanl1 (\(_,s) (d,v) -> (d, s+v)) inputs
+           median      = (/2).sum $ containerVolumes
+           optimal     = fst.head $ dropWhile (\(_,s) -> s < median) $ scanl1 (\(_,s) (d,v) -> (d, s+v)) inputs
            diffsum     = sum      $ map (\(d,v)->abs(d-optimal)*v) inputs
