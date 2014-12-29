@@ -6,7 +6,7 @@ module Srm629Div2Lev1 where
 rectangleCoveringEasy holeH holeW boardH boardW
     | minH >  minB || maxH >  maxB = -1
     | minH == minB && maxH == maxB = -1
-    | otherwise                    = 1
+    | otherwise                    =  1
     where minmax  x y = (min x y, max x y)
           (minH, maxH) = minmax holeH  holeW
           (minB, maxB) = minmax boardH boardW
