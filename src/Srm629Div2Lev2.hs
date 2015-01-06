@@ -3,26 +3,25 @@
 ------------------------------------------------------
 module Srm629Div2Lev2 where
 import Data.List
+import Data.Maybe
 ------------------------------------------------------
-handlerUpdateTable (sortedList, volumeTotal) (density, volume) =
-                   (insert (density, volume) sortedList, volumeTotal + volume)
+handlerInsertTable (densities, median) (density, volume) =
+                   (insert (density, volume) densities, median + volume/2)
 ------------------------------------------------------
-handlerFindOptimal (sortedList, volumeTotal) = (sortedList, optimal)
-    where optimal = fst.head                                $ -- 4. extract first density
-                    dropWhile (\(_,s) -> s < volumeTotal/2) $ -- 3. [(density, _) |  median < accumumlate[volume]]
-                    scanl1    (\(_,s) (d,v) -> (d, s+v))    $ -- 2. [(density, accumulate [volume])]
-                    sortedList                                -- 1. [(density, volume)]
+handlerFindOptimal (densities, median) = (densities, optimal)
+    where subsums = scanl1 (\(_,s) (d,v) -> (d, s+v)) densities
+          optimal = head [d|(d,s)<-subsums, median <= s]
 ------------------------------------------------------
-handlerFindDiffsum (list, optimal) = sum [abs(d-optimal)*v | (d,v)<-list]
+handlerFindDiffsum (densities, optimal) = sum [abs(d-optimal)*v | (d,v)<-densities]
 ------------------------------------------------------
-candyMaking containerVolumes desiredWeights = last diffsum
-    where                                        -- # | time      | space | describe
-      diffsum =                                  -----------------------------------------------------------------
-        map        handlerFindDiffsum         $    -- 5.|O(n),E(n/2)| O(n)  | [sum (optimal-density)*volume]
-        map        handlerFindOptimal         $    -- 4.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], optimal)]     where optimal     = median
-        tail.scanl handlerUpdateTable ([],0)  $    -- 3.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], totalVolume)] where totalVolume = sum [volume]
-        map        (\(v,w)->(w/v, v))         $    -- 2.|O(1)       | O(1)  | [(density, volume)]                       where density     = weight/volume
-        zip        containerVolumes desiredWeights -- 1.|O(1)       | O(1)  | [(volume, weight)]
+candyMaking volumes weights = last diffsum
+    where                                 -- # | time      | space | describe
+      diffsum =                           -----------------------------------------------------------------
+        map   handlerFindDiffsum        $ -- 5.|O(n),E(n/2)| O(n)  | [sum (optimal-density)*volume]
+        map   handlerFindOptimal        $ -- 4.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], optimal)] where optimal = median
+        scanl handlerInsertTable ([],0) $ -- 3.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], median)]  where median  = sum[volume]/2
+        map   (\(v,w)->(w/v, v))        $ -- 2.|O(1)       | O(1)  | [(density, volume)]                   where density = weight/volume
+        zip   volumes weights             -- 1.|O(1)       | O(1)  | [(volume, weight)]
 ------------------------------------------------------
 main = do
     print $ candyMaking [5] [1000]
@@ -39,9 +38,13 @@ main = do
 -}
 
 ------------------------------------------------------
--- if you need more simple code for batch-job. O(n)
-candyMaking' containerVolumes desiredWeights = diffsum
-    where  inputs      = sort     $ zipWith  (\v w->(w/v, v)) containerVolumes desiredWeights
-           median      = (/2).sum $ containerVolumes
-           optimal     = fst.head $ dropWhile (\(_,s) -> s < median) $ scanl1 (\(_,s) (d,v) -> (d, s+v)) inputs
-           diffsum     = sum      $ map (\(d,v)->abs(d-optimal)*v) inputs
+-- if you need more simple code for batch-job. O(n * log n)
+
+candyMaking' volumes weights = sum [abs (d-optimal) * v| (d,v) <-densities]
+    where  densities   = [(w/v, v)|(v,w) <-zip volumes weights]
+           densities'  = scanl1 (\(_,s) (d,v) -> (d, s+v)) $ sort densities
+           optimal     = head [d|(d,s)<-densities', (sum volumes)/2 <= s]
+
+------------------------------------------------------
+-- refactoring pudae's code
+candyMaking'' vs ws  = minimum [sum [abs(w-v*d) | (w,v) <- zip ws vs] | d <- zipWith (/) ws vs]
