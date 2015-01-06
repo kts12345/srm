@@ -11,12 +11,12 @@ handlerFindOptimal (densities, median) = (densities, optimal)
     where subsums = scanl1 (\(_,s) (d,v) -> (d, s+v)) densities
           optimal = head [d|(d,s)<-subsums, median <= s]
 ------------------------------------------------------
-handlerFindDiffsum (densities, optimal) = sum [abs(d-optimal)*v | (d,v)<-densities]
+handlerClacDiffsum (densities, optimal) = sum [abs(d-optimal)*v | (d,v)<-densities]
 ------------------------------------------------------
 candyMaking volumes weights = last diffsum
     where                                 -- # | time      | space | describe
       diffsum =                           -----------------------------------------------------------------
-        map   handlerFindDiffsum        $ -- 5.|O(n),E(n/2)| O(n)  | [sum (optimal-density)*volume]
+        map   handlerClacDiffsum        $ -- 5.|O(n),E(n/2)| O(n)  | [sum (optimal-density)*volume]
         map   handlerFindOptimal        $ -- 4.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], optimal)] where optimal = median
         scanl handlerInsertTable ([],0) $ -- 3.|O(n),E(n/2)| O(n)  | [(sort [(density, volume)], median)]  where median  = sum[volume]/2
         map   (\(v,w)->(w/v, v))        $ -- 2.|O(1)       | O(1)  | [(density, volume)]                   where density = weight/volume
