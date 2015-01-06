@@ -3,7 +3,6 @@
 ------------------------------------------------------
 module Srm629Div2Lev2 where
 import Data.List
-import Data.Maybe
 ------------------------------------------------------
 handlerInsertTable (densities, median) (density, volume) =
                    (insert (density, volume) densities, median + volume/2)
