@@ -1,4 +1,4 @@
--- Srm628Div2Lev2 BishopMove
+-- Srm628Div2Lev1 BishopMove
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13280
 module Srm628Div2Lev1 where
 ------------------------------------------------------
