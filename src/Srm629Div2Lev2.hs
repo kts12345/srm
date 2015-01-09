@@ -46,4 +46,5 @@ candyMaking' volumes weights = sum [abs (d-optimal) * v| (d,v) <-densities]
 
 ------------------------------------------------------
 -- refactoring pudae's code
-candyMaking'' vs ws  = minimum [sum [abs(w-v*d) | (w,v) <- zip ws vs] | d <- zipWith (/) ws vs]
+candyMaking'' vs ws  = minimum [sum [abs(w-v*d) | (w,v) <- zip ws vs] | 
+                                d <- zipWith (/) ws vs]
