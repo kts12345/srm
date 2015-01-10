@@ -2,22 +2,19 @@
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13243
 module Srm628Div2Lev2 where
 ------------------------------------------------------
-kBrackets = "()[]{}"
-match e1 e2 | [e1,e2] == "()"  = True
-            | [e1,e2] == "[]"  = True
-            | [e1,e2] == "{}"  = True
-            | otherwise        = False
+kBrackets = ["()","[]","{}"]
 stringAnswer True  = "Possible"
 stringAnswer False = "Impossible"
 ------------------------------------------------------
-list 'X' = kBrackets
+list 'X' = foldl1 (++) kBrackets -- "()[]{}"
 list e   = [e]
 ------------------------------------------------------
 apply stacks es = stacks'
     where stacks' = [check e stack | stack<-stacks, e<-es]
           check e []                       = [e]          -- push
           check e (top:tail)| match top e  = tail         -- pop
-                            | otherwise    = (e:top:tail) -- push 
+                            | otherwise    = (e:top:tail) -- push
+          match e1 e2 = elem [e1,e2] kBrackets
 ------------------------------------------------------
 bracketExpressions xs =  last               $
                          map   stringAnswer $
