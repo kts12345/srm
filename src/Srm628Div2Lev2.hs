@@ -9,7 +9,7 @@ stringAnswer False = "Impossible"
 list 'X' = foldl1 (++) kBrackets -- "()[]{}"
 list e   = [e]
 ------------------------------------------------------
-apply stacks es = stacks'
+handler stacks es = stacks'
     where stacks' = [check e stack | stack<-stacks, e<-es]
           check e []                       = [e]          -- push
           check e (top:tail)| match top e  = tail         -- pop
@@ -19,7 +19,7 @@ apply stacks es = stacks'
 bracketExpressions xs =  last               $
                          map   stringAnswer $
                          map   (elem [])    $
-                         scanl apply [[]]   $
+                         scanl handler [""] $
                          map   list         $
                          xs
 ------------------------------------------------------
