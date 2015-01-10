@@ -10,8 +10,8 @@ match e1 e2 | [e1,e2] == "()"  = True
 stringAnswer True  = "Possible"
 stringAnswer False = "Impossible"
 ------------------------------------------------------
-gen 'X' = kBrackets
-gen e   = [e]
+list 'X' = kBrackets
+list e   = [e]
 ------------------------------------------------------
 apply stacks es = stacks'
     where stacks' = [check e stack | stack<-stacks, e<-es]
@@ -23,7 +23,7 @@ bracketExpressions xs =  last               $
                          map   stringAnswer $
                          map   (elem [])    $
                          scanl apply [[]]   $
-                         map   gen          $
+                         map   list         $
                          xs
 ------------------------------------------------------
 main = do
