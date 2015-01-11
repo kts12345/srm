@@ -16,8 +16,8 @@ handler stacks es = stacks' where
     stacks' = filter valid $
               [update e stack | stack<-stacks, e<-es]
     update e []                     = [e]          -- push
-    update e (top:tail)| pair top e = tail         -- pop
-                       | otherwise  = (e:top:tail) -- push
+    update e (top:tail) | pair top e = tail        -- pop
+                        | otherwise  = (e:top:tail)-- push
     valid (top:tail)  = open top                   -- insight : valid stack must have only open brackets
     valid _           = True
 ------------------------------------------------------
