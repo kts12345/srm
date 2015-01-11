@@ -18,17 +18,17 @@ handler stacks es = stacks'
           update e []                     = [e]          -- push
           update e (top:tail)| pair top e = tail         -- pop
                              | otherwise  = (e:top:tail) -- push
-          valid (top:tail)  = open top
+          valid (top:tail)  = open top -- insight : valid stack must have only open brackets
           valid _           = True
 ------------------------------------------------------
-bracketExpressions xs =  last               $   -- 6.                                               "ImPossible"
-                         map   stringAnswer $   -- 5. [ "Imossible"   , "Possible"                , "Impossible" ]
-                         map   (elem "")    $   -- 4. [  False        ,  True                     ,  False       ]
-                         scanl handler [""] $   -- 3. [ [ "(" ]       ,  [ "((", "", "([", "({" ] ,  ["("]       ]
-                         map   list         $   -- 2. [   "("         ,    "()[]{}"               ,  "}"         ]
-                         xs                     -- 1. [   '('         ,    'X'                    ,  '}'         ]
+bracketExpressions xs =  last               $   -- 6.                                            "ImPossible"
+                         map   stringAnswer $   -- 5. [ "Imossible",   "Possible"              , "Impossible" ]
+                         map   (elem "")    $   -- 4. [ False      ,    True                   ,  False       ]
+                         scanl handler [""] $   -- 3. [ [ "(" ]    ,  [ "((", "", "([", "({" ] ,  [ "(" ]     ]
+                         map   list         $   -- 2. [   "("      ,    "()[]{}"               ,    "}"       ]
+                         xs                     -- 1. [   '('      ,    'X'                    ,    '}'       ]
                                                 -- 0. ex) xs == "(X}"
-------------------------------------------------------
+------------------------------------------------------ 
 main = do
  print $ bracketExpressions  "([]{})"
  print $ bracketExpressions  "(())[]"
@@ -42,4 +42,12 @@ main = do
  Impossible
  Impossible
  Possible
+-}
+
+{-
+"X"     : 6    -> 3
+"XX"    : 36   -> 12
+"XXX"   : 196  -> 45
+"XXXX"  : 1296 -> 180
+"XXXXX" : 7776 -> 702
 -}
