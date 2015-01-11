@@ -2,10 +2,10 @@
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13243
 module Srm628Div2Lev2 where
 ------------------------------------------------------
-kPairs   = ["()","[]","{}"]
-pair a b = elem [a,b] kPairs
-kOpens   = map head kPairs -- "([{"
-open e   = elem e kOpens
+kPairs       =  ["()","[]","{}"]
+pair a b     =  elem [a,b] kPairs
+kOpens       =  map  head  kPairs -- "([{"
+open e       =  elem e     kOpens
 answer True  = "Possible"
 answer False = "Impossible"
 ------------------------------------------------------
