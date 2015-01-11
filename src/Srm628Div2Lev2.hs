@@ -4,6 +4,8 @@ module Srm628Div2Lev2 where
 ------------------------------------------------------
 kPairs   = ["()","[]","{}"]
 pair a b = elem [a,b] kPairs
+kOpens   = map head kPairs -- "([{"
+open e   = elem e kOpens
 stringAnswer True  = "Possible"
 stringAnswer False = "Impossible"
 ------------------------------------------------------
@@ -11,17 +13,20 @@ list 'X' = foldl1 (++) kPairs -- "()[]{}"
 list e   = [e]
 ------------------------------------------------------
 handler stacks es = stacks'
-    where stacks' = [check e stack | stack<-stacks, e<-es]
-          check e []                     = [e]          -- push
-          check e (top:tail)| pair top e = tail         -- pop
-                            | otherwise  = (e:top:tail) -- push
+    where stacks' = filter valid $
+                    [update e stack | stack<-stacks, e<-es]
+          update e []                     = [e]          -- push
+          update e (top:tail)| pair top e = tail         -- pop
+                             | otherwise  = (e:top:tail) -- push
+          valid (top:tail)  = open top
+          valid _           = True
 ------------------------------------------------------
-bracketExpressions xs =  last               $   -- 6.                                                 "ImPossible"
-                         map   stringAnswer $   -- 5. [ "Imossible",  "Possible"                   ,  "Impossible"                       ]
-                         map   (elem "")    $   -- 4. [  False     ,   True                        ,   False                             ]
-                         scanl handler [""] $   -- 3. [ ["("]      ,  ["((","","([","(]","({","(}"],  ["((}","}","([}","(]}","(" ,"(}}"] ]
-                         map   list         $   -- 2. [ "("        ,  "()[]{}"                     ,  "}"                                ]
-                         xs                     -- 1. [ '('        ,  'X'                          ,  '}'                                ]
+bracketExpressions xs =  last               $   -- 6.                                               "ImPossible"
+                         map   stringAnswer $   -- 5. [ "Imossible"   , "Possible"                , "Impossible" ]
+                         map   (elem "")    $   -- 4. [  False        ,  True                     ,  False       ]
+                         scanl handler [""] $   -- 3. [ [ "(" ]       ,  [ "((", "", "([", "({" ] ,  ["("]       ]
+                         map   list         $   -- 2. [   "("         ,    "()[]{}"               ,  "}"         ]
+                         xs                     -- 1. [   '('         ,    'X'                    ,  '}'         ]
                                                 -- 0. ex) xs == "(X}"
 ------------------------------------------------------
 main = do
