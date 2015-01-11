@@ -16,13 +16,13 @@ handler stacks es = stacks'
           check e (top:tail)| pair top e = tail         -- pop
                             | otherwise  = (e:top:tail) -- push
 ------------------------------------------------------
-bracketExpressions xs =  last               $   -- 6. "Possible"
-                         map   stringAnswer $   -- 5. [ "Imossible","Possible","Impossible"      , "Possible"                    ]
-                         map   (elem [])    $   -- 4. [ False,  True,  False                     ,  True                         ]
-                         scanl handler [""] $   -- 3. [ ["("],  [""],  ["(","")","[","]","{","}"],  ["(}",")}","[}","[}","","}}" ]
-                         map   list         $   -- 2. [ "("  ,  ")" ,  "()[]{}"                  ,  "}"                          ]
-                         xs                     -- 1. [ '('  ,  ')' ,  'X'                       ,  '}'                          ]
-                                                -- 0. ex) xs == "()X}"
+bracketExpressions xs =  last               $   -- 6.                                                 "ImPossible"
+                         map   stringAnswer $   -- 5. [ "Imossible",  "Possible"                   ,  "Impossible"                       ]
+                         map   (elem [])    $   -- 4. [  False     ,   True                        ,   False                             ]
+                         scanl handler [""] $   -- 3. [ ["("]      ,  ["((","","([","(]","({","(}"],  ["((}","}","([}","(]}","(" ,"(}}"] ]
+                         map   list         $   -- 2. [ "("        ,  "()[]{}"                     ,  "}"                                ]
+                         xs                     -- 1. [ '('        ,  'X'                          ,  '}'                                ]
+                                                -- 0. ex) xs == "(X}"
 ------------------------------------------------------
 main = do
  print $ bracketExpressions  "([]{})"
@@ -32,12 +32,9 @@ main = do
  print $ bracketExpressions  "([]X()[()]XX}[])X{{}}]"
 ------------------------------------------------------
 {- Output
-
  Possible
  Possible
  Impossible
  Impossible
  Possible
-
 -}
-
