@@ -18,7 +18,7 @@ handler stacks es = stacks'
 ------------------------------------------------------
 bracketExpressions xs =  last               $   -- 6.                                                 "ImPossible"
                          map   stringAnswer $   -- 5. [ "Imossible",  "Possible"                   ,  "Impossible"                       ]
-                         map   (elem [])    $   -- 4. [  False     ,   True                        ,   False                             ]
+                         map   (elem "")    $   -- 4. [  False     ,   True                        ,   False                             ]
                          scanl handler [""] $   -- 3. [ ["("]      ,  ["((","","([","(]","({","(}"],  ["((}","}","([}","(]}","(" ,"(}}"] ]
                          map   list         $   -- 2. [ "("        ,  "()[]{}"                     ,  "}"                                ]
                          xs                     -- 1. [ '('        ,  'X'                          ,  '}'                                ]
