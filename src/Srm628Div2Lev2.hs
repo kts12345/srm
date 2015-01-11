@@ -11,17 +11,18 @@ list e   = [e]
 ------------------------------------------------------
 handler stacks es = stacks'
     where stacks' = [check e stack | stack<-stacks, e<-es]
-          check e []                       = [e]          -- push
-          check e (top:tail)| match top e  = tail         -- pop
-                            | otherwise    = (e:top:tail) -- push
-          match e1 e2 = elem [e1,e2] kBrackets
+          check e []                    = [e]          -- push
+          check e (top:tail)| match     = tail         -- pop
+                            | otherwise = (e:top:tail) -- push
+             where match = elem [top,e] kBrackets
 ------------------------------------------------------
-bracketExpressions xs =  last               $
-                         map   stringAnswer $
-                         map   (elem [])    $
-                         scanl handler [""] $
-                         map   list         $
-                         xs
+bracketExpressions xs =  last               $   -- 6. "Possible"
+                         map   stringAnswer $   -- 5. ["Imossible","Possible","Impossible"      , "Possible"                   ]
+                         map   (elem [])    $   -- 4. [False,  True,  False                     ,  True                        ]
+                         scanl handler [""] $   -- 3. [["("],  [""],  ["(","")","[","]","{","}"],  ["(}",")}","[}","[}","","}}"]
+                         map   list         $   -- 2. ["("  ,  ")" ,  "()[]{}"                  ,  "}"                         ]
+                         xs                     -- 1. ['('  ,  ')' ,  'X'                       ,  '}'                         ]
+                                                -- 0. ex) xs == "()X}"
 ------------------------------------------------------
 main = do
  print $ bracketExpressions  "([]{})"
@@ -47,4 +48,6 @@ main = do
 ([]X()[()]XX}[])X{{}}]
 ([]{()[()]()}[])[{{}}]
    X      XX}   X    ]
+({({{{(([[[[({})]]]]))}}})})
+({({{{(([[[[({}{})]]]]))}}})})
 -}
