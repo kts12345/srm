@@ -3,7 +3,7 @@
 module Srm628Div2Lev2 where
 import Data.List
 ------------------------------------------------------
--- stack
+-- Util : Stack
 type Stack a   = [a]
 kEmpty         = []
 empty          = null
@@ -11,7 +11,7 @@ push a stack   = [a]++stack
 pop    stack   = tail stack
 top    stack   = head stack
 ------------------------------------------------------
--- bracket
+-- BracketExpressions problem Constraints
 kPairs       =  ["()","[]","{}"]
 pair a b     =  elem [a,b] kPairs
 kOpens       =  map  head  kPairs -- "([{"
