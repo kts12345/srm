@@ -24,10 +24,7 @@ list e   = [e]
 ------------------------------------------------------
 handler:: [Stack Char] -> [Char]-> [Stack Char]
 handler stacks es = stacks' where
-    stacks' = nub           $
-              map    update $
-              filter valid  $
-              [(stack, e) | stack<-stacks, e<-es]
+    stacks' = nub $ map update $ filter valid $ [(stack, e) | stack<-stacks, e<-es]
     valid  (stack, e) | open  e             =  True
                       | empty stack         =  False
                       | pair  (top stack) e =  True
