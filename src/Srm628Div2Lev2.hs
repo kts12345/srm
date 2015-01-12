@@ -4,12 +4,12 @@ module Srm628Div2Lev2 where
 import Data.List
 ------------------------------------------------------
 -- Util : Stack
-type Stack a   = [a]
-kEmpty         = []
-empty          = null
-push a stack   = [a]++stack
-pop    stack   = tail stack
-top    stack   = head stack
+type Stack a = [a]
+kEmpty       = []
+empty        = null
+push stack a = [a]++stack
+pop  stack   = tail stack
+top  stack   = head stack
 ------------------------------------------------------
 -- BracketExpressions problem Constraints
 kPairs       =  ["()","[]","{}"]
@@ -23,23 +23,27 @@ list 'X' = foldl1 (++) kPairs -- "()[]{}"
 list e   = [e]
 ------------------------------------------------------
 handler:: [Stack Char] -> [Char]-> [Stack Char]
-handler stacks es = stacks' where
-    stacks' = nub $ map update $ filter valid $ [(stack, e) | stack<-stacks, e<-es]
+handler stacks es = stacks'
+    where
+    stacks' = nub           $
+              map    update $
+              filter valid  $
+              [(s, e) | s<-stacks, e<-es]
     valid  (stack, e) | open  e             =  True
                       | empty stack         =  False
                       | pair  (top stack) e =  True
                       | otherwise           =  False
-    update (stack, e) | open e    =  push e stack
-                      | otherwise =  pop    stack
+    update (stack, e) | open e    =  push stack e
+                      | otherwise =  pop  stack
 ------------------------------------------------------
 bracketExpressions xs =
-    last                   $   -- 6.                                            "ImPossible"
-    map   answer           $   -- 5. [ "Imossible",   "Possible"              , "Impossible" ]
-    map   (any empty)      $   -- 4. [ False      ,    True                   ,  False       ]
-    scanl handler [kEmpty] $   -- 3. [ [ "(" ]    ,  [ "((", "", "([", "({" ] ,  [ "(" ]     ]
-    map   list             $   -- 2. [   "("      ,    "()[]{}"               ,    "}"       ]
-    xs                         -- 1. [   '('      ,    'X'                    ,    '}'       ]
-                               -- 0. ex) xs == "(X}"
+    last                   $ -- 6.                                            "ImPossible"
+    map   answer           $ -- 5. [ "Imossible",   "Possible"              , "Impossible" ]
+    map   (any empty)      $ -- 4. [ False      ,    True                   ,  False       ]
+    scanl handler [kEmpty] $ -- 3. [ [ "(" ]    ,  [ "((", "", "([", "({" ] ,  [ "(" ]     ]
+    map   list             $ -- 2. [   "("      ,    "()[]{}"               ,    "}"       ]
+    xs                       -- 1. [   '('      ,    'X'                    ,    '}'       ]
+                             -- 0. ex) xs == "(X}"
 ------------------------------------------------------ 
 main = do
  print $ bracketExpressions  "([]{})"
