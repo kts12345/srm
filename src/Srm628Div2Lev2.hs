@@ -24,13 +24,16 @@ list e   = [e]
 ------------------------------------------------------
 handler:: [Stack Char] -> [Char]-> [Stack Char]
 handler stacks es = stacks' where
-    stacks' = nub [update stack e | stack<-stacks, e<-es, valid stack e]
-    valid  stack e  | open e              = True
-                    | empty stack         = False
-                    | pair (top stack) e  = True
-                    | otherwise           = False
-    update stack e  | open e    =  push e stack
-                    | otherwise =  pop    stack
+    stacks' = nub           $
+              map    update $
+              filter valid  $
+              [(stack, e) | stack<-stacks, e<-es]
+    valid  (stack, e) | open  e             =  True
+                      | empty stack         =  False
+                      | pair  (top stack) e =  True
+                      | otherwise           =  False
+    update (stack, e) | open e    =  push e stack
+                      | otherwise =  pop    stack
 ------------------------------------------------------
 bracketExpressions xs =
     last                   $   -- 6.                                            "ImPossible"
