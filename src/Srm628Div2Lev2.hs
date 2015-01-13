@@ -7,7 +7,7 @@ import Data.List
 type Stack a = [a]
 kEmpty       = []
 empty        = null
-push stack a = [a]++stack
+push stack a = (a:stack)
 pop  stack   = tail stack
 top  stack   = head stack
 ------------------------------------------------------
@@ -19,7 +19,7 @@ open e       =  elem e     kOpens
 answer True  = "Possible"
 answer False = "Impossible"
 ------------------------------------------------------
-list 'X' = foldl1 (++) kPairs -- "()[]{}"
+list 'X' = concat kPairs -- "()[]{}"
 list e   = [e]
 ------------------------------------------------------
 handler:: [Stack Char] -> [Char]-> [Stack Char]
