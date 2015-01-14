@@ -25,7 +25,7 @@ list e   = [e]
 handler:: [Stack Char] -> [Char]-> [Stack Char]
 handler stacks es = stacks'
     where
-    stacks' = nub           $
+    stacks' = -- nub           $
               map    update $
               filter valid  $
               [(s, e) | s<-stacks, e<-es]
@@ -51,6 +51,7 @@ main = do
  print $ bracketExpressions  "({])"
  print $ bracketExpressions  "[]X"
  print $ bracketExpressions  "([]X()[()]XX}[])X{{}}]"
+
 ------------------------------------------------------
 {- Output
  Possible
@@ -60,13 +61,16 @@ main = do
  Possible
 -}
 
-{- optimization
+{- optimization effects
+
   # of      | before | after  | after
-   X        | always | filter | nub
+   X        |        | filter | nub
 --------------------------------------
-"..X.."     : 6     -> 3      -> 3
-"..XX.."    : 36    -> 12     -> 10
-"..XXX.."   : 196   -> 45     -> 30
-"..XXXX.."  : 1296  -> 180    -> 91
-"..XXXXX.." : 7776  -> 702    -> 273
+            | always | worst  | worst
+--------------------------------------
+"..X.."     : 6     -> 4      -> 4
+"..XX.."    : 36    -> 16     -> 13
+"..XXX.."   : 196   -> 64     -> 40
+"..XXXX.."  : 1296  -> 256    -> 121
+"..XXXXX.." : 7776  -> 1024   -> 361
 -}
