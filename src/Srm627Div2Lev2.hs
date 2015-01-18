@@ -4,18 +4,18 @@ module Srm627Div2Lev2 where
 ------------------------------------------------------
 import qualified Data.Map as M
 ------------------------------------------------------
-handler (maxLetter,  maxCnt,  table , len    ) letter =
-        (maxLetter', maxCnt', table', len + 1)
+handler (maxLetter,  maxCnt,  table , len    ) letter
+   | maxCnt < cnt = (letter,     cnt,    table', len + 1)
+   | otherwise    = (maxLetter,  maxCnt, table', len + 1)
     where
-        (maxLetter', maxCnt') | cnt' <= maxCnt  = (maxLetter, maxCnt)
-                              | otherwise       = (letter   , cnt'  )
-        cnt'   = 1 + M.findWithDefault 0 letter table
-        table' = M.insert letter cnt' table  
+        cnt    = M.findWithDefault 0 letter table + 1
+        table' = M.insert letter cnt table  
 ------------------------------------------------------
-calcHappy (letter, cnt, _, len) = if (2*cnt) > len then letter else '.'
+calcHappyLetter (letter, cnt, _, len) | (2*cnt) > len = letter 
+                                      | otherwise      = '.'
 ------------------------------------------------------
 happyLetter xs = last                  $
-    map   calcHappy                    $
+    map   calcHappyLetter              $
     scanl handler ('a', 0, M.empty, 0) $
     xs
 ------------------------------------------------------
