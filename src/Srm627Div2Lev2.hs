@@ -4,11 +4,11 @@ module Srm627Div2Lev2 where
 ------------------------------------------------------
 import qualified Data.Map as M
 ------------------------------------------------------
-handler (maxLetter, maxCnt, table, len) letter = (maxLetter', maxCnt', table', len+1)
-    where cnt'   = 1 + M.findWithDefault 0 letter table
-          table' = M.insert letter cnt' table
-          (maxLetter', maxCnt') | maxCnt < cnt'  = (letter   , cnt'  )
-                                | otherwise      = (maxLetter, maxCnt)
+handler (maxLetter, maxCnt, table, len) letter
+    | maxCnt < cnt'  = (letter   , cnt'  , table', len+1)
+    | otherwise      = (maxLetter, maxCnt, table', len+1)
+        where cnt'   = 1 + M.findWithDefault 0 letter table
+              table' = M.insert letter cnt' table  
 ------------------------------------------------------
 calcHappy (letter, cnt, _, len) = if (2*cnt) > len then letter else '.'
 ------------------------------------------------------
