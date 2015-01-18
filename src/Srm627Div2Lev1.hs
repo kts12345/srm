@@ -4,8 +4,9 @@ module Srm627Div2Lev1 where
 ------------------------------------------------------
 import qualified Data.Map as M
 ------------------------------------------------------
-handler (_,table) stick | cnt == 3   = (1, M.delete stick         table)
-                        | otherwise  = (0, M.insert stick (cnt+1) table)
+handler (_,table) stick
+    | cnt == 3   = (1, M.delete stick table)
+    | otherwise  = (0, M.insert stick (cnt+1) table)
       where cnt  =  M.findWithDefault 0 stick table
 ------------------------------------------------------
 manySquares xs = last           $ -- 4.                                                                 1
