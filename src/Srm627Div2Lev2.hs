@@ -10,11 +10,11 @@ handler (maxLetter, maxCnt, table, len) letter = (maxLetter', maxCnt', table', l
           (maxLetter', maxCnt') | maxCnt < cnt'  = (letter   , cnt'  )
                                 | otherwise      = (maxLetter, maxCnt)
 ------------------------------------------------------
-calcHappy letter cnt len = if (2*cnt) > len then letter else '.'
+calcHappy (letter, cnt, _, len) = if (2*cnt) > len then letter else '.'
 ------------------------------------------------------
-happyLetter xs = last                    $
-    map (\(a,b,_,d)-> calcHappy a b d)   $
-    scanl handler ('a', 0, M.empty, 0)   $
+happyLetter xs = last                  $
+    map   calcHappy                    $
+    scanl handler ('a', 0, M.empty, 0) $
     xs
 ------------------------------------------------------
 main = do 
