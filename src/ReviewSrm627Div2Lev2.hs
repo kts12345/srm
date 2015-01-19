@@ -1,6 +1,5 @@
 module ReviewSrm627Div2Lev2 where
 
-import Debug.Trace
 import Data.List
 import Data.Tuple
 import qualified Data.Map as M
