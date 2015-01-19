@@ -5,7 +5,7 @@ import Data.List
 import Data.Tuple
 import qualified Data.Map as M
 
-updateState m c = M.insertWith (+) c 1 m
+updateState m c   = M.insertWith (+) c 1 m
 
 compareSwap v1 v2 = compare (swap v1) (swap v2)
 
@@ -16,8 +16,8 @@ getHappyLetter cs =
           last
         $ map   toHappyLetter
         $ zip   [0,1..]
-        $ map   (\ls -> maximumBy compareSwap ls)
-        $ map   (\m  -> M.toList m)
+        $ map   (maximumBy compareSwap)
+        $ map   (M.toList)
         $ scanl updateState M.empty cs
 
 main = do
