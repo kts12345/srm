@@ -16,17 +16,16 @@ toHappyLetter (total, (c, count)) | div total 2 < count = c
 
 getHappyLetter cs = 
           last
-        $ map   toHappyLetter
-        $ zip [1,2..]
-        $ map   (\(ls) -> (maximumBy compareSwap ls))
-        $ map   (\(m)  -> (M.toList m))
+        $ map toHappyLetter
+        $ map (\(count, ls) -> (count, maximumBy compareSwap ls))
+        $ map (\(count, m)  -> (count, M.toList m))
         $ tail
-        $ scanl updateState (M.empty) cs
+        $ scanl updateState (0, M.empty) cs
 
 main = do
     print $ getHappyLetter "aacaa"
     print $ getHappyLetter "dcdjx"
     print $ getHappyLetter "bcbbbbba"
     print $ getHappyLetter "aabc"
-    print $ getHappyLetter "oyyyoowoooofwjoooooffyyooo"		-- o	
+    print $ getHappyLetter "oyyyoowoooofwjoooooffyyooo"         -- o    
     print $ getHappyLetter "jyjjkjjkjjykkkkyjyjkkkyjkykyjjkkjkjykkxjjk"
