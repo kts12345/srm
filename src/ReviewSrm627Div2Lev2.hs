@@ -14,10 +14,10 @@ toHappyLetter (total, (c, count)) | div total 2 < count = c
 
 getHappyLetter cs = 
           last
-        $ map toHappyLetter 
-        $ zip [0,1..]
-        $ map (\ls -> maximumBy compareSwap ls)
-        $ map (\m  -> M.toList m)
+        $ map   toHappyLetter
+        $ zip   [0,1..]
+        $ map   (\ls -> maximumBy compareSwap ls)
+        $ map   (\m  -> M.toList m)
         $ scanl updateState M.empty cs
 
 main = do
