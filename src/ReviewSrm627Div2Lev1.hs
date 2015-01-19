@@ -1,7 +1,7 @@
 module ReviewSrm627Div2Lev1 where
 import qualified Data.Map as M
 
-updateMap m l        = M.insertWith (+) l 1 m
+updateMap m l  = M.insertWith (+) l 1 m
 
 howManySquares ls =
         last
