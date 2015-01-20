@@ -3,13 +3,14 @@
 module Srm627Div2Lev2 where
 ------------------------------------------------------
 import qualified Data.Map as M
+import Data.Maybe
 ------------------------------------------------------
 handler (maxLetter, maxCnt, table) letter
                     | cnt < maxCnt = (maxLetter, maxCnt, table')
                     | otherwise    = (letter,    cnt,    table')
     where
-        cnt    = M.findWithDefault 0 letter table + 1
-        table' = M.insert letter cnt table
+        (old, table') = M.insertLookupWithKey (\_ _ v -> v+1) letter 1 table
+        cnt           = 1 + (if old == Nothing then 0 else fromJust old)
 ------------------------------------------------------
 toHappy total letter cnt | (2*cnt) > total = letter
                          | otherwise       = '.'
@@ -20,7 +21,7 @@ happyLetter xs = last                   $
         scanl handler ('a', 0, M.empty) $
         xs
     where
-        toHappy' (total, (letter, cnt, _)) = toHappy total letter cnt
+        toHappy' (total, (letter, cnt, _)) = toHappy total letter cnt -- syntax adaptor
 
 ------------------------------------------------------
 main = do 
