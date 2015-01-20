@@ -5,24 +5,21 @@ module Srm627Div2Lev2 where
 import qualified Data.Map as M
 import Data.Maybe
 ------------------------------------------------------
-handler (maxLetter, maxCnt, table) letter
-                    | cnt < maxCnt = (maxLetter, maxCnt, table')
-                    | otherwise    = (letter,    cnt,    table')
-    where
-        (old, table') = M.insertLookupWithKey (\_ _ v -> v+1) letter 1 table
-        cnt           = 1 + (if old == Nothing then 0 else fromJust old)
+handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch))
+    where (old, tbl') = M.insertLookupWithKey (\_ _ o -> o+1) ch 1 tbl
+          num | isJust old = 1 + fromJust old
+              | otherwise  = 1
 ------------------------------------------------------
-toHappy total letter cnt | (2*cnt) > total = letter
-                         | otherwise       = '.'
+toHappy total num ch | total < (2*num) = ch
+                     | otherwise       = '.'
 ------------------------------------------------------
-happyLetter xs = last                   $
-        map   toHappy'                  $
-        zip   [0,1..]                   $
-        scanl handler ('a', 0, M.empty) $
-        xs
-    where
-        toHappy' (total, (letter, cnt, _)) = toHappy total letter cnt -- syntax adaptor
-
+happyLetter xs = 
+    last                             $
+    map   toHappy'                   $
+    zip   [0,1..]                    $
+    scanl handler (M.empty, (0,'a')) $
+    xs
+    where toHappy' (total, (_, (num, ch))) = toHappy total num ch
 ------------------------------------------------------
 main = do 
     print $ happyLetter "aacaaa"
