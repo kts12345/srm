@@ -1,6 +1,6 @@
 -- Srm627Div2Lev2 HappyLetter
 -- http://community.topcoder.com/stat?c=problem_statement&pm=13245&rd=16008
-module Srm627Div2Lev2 where
+module Srm627Div2Lev2 where    
 ------------------------------------------------------
 import qualified Data.Map as M
 ------------------------------------------------------
@@ -11,14 +11,17 @@ handler (maxLetter, maxCnt, table) letter
            cnt    = M.findWithDefault 0 letter table + 1
            table' = M.insert letter cnt table
 ------------------------------------------------------
-calcHappyLetter (len, (letter, cnt, _)) | (2*cnt) > len = letter
-                                        | otherwise     = '.'
+toHappy len letter cnt | (2*cnt) > len = letter
+                        | otherwise     = '.'
 ------------------------------------------------------
-happyLetter xs = last                  $
-    map   calcHappyLetter              $
-    zip   [0,1..]                      $
-    scanl handler ('a', 0, M.empty)    $
-    xs
+happyLetter xs = last                   $
+        map   toHappy'                  $
+        zip   [0,1..]                   $
+        scanl handler ('a', 0, M.empty) $
+        xs
+    where
+        toHappy' (len, (letter, cnt, _)) = toHappy len letter cnt
+
 ------------------------------------------------------
 main = do 
     print $ happyLetter "aacaaa"
