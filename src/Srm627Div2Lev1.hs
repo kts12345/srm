@@ -24,7 +24,6 @@ main = do
     print $ manySquares  [1,1,1,2,2,2,3,3,3,4,4,4]
     print $ manySquares  [1,1,1,2,1,1,1,3,1,1,1]
     print $ manySquares  [2,2,4,4,8,8]
-    print $ (truncate.(/4)) 14
 {- Output
  1
  1
@@ -38,9 +37,13 @@ main = do
 ------------------------------------------------------
 -- if you need more simple code for batch-job.
 manySquares' xs =
-    M.fold (+) 0       $
-    M.map  truncate    $
-    M.map  (/4)        $
-    M.fromListWith (+) $
+    M.fold  (+) 0       $
+    M.map   truncate    $
+    M.map   (/4)        $
+    M.fromListWith (+)  $
     zip xs [1,1..]
-
+-- or
+manySquares'' xs =
+    M.fold (\v acc-> (div v 4) + acc) 0 $
+    M.fromListWith (+)                  $
+    zip xs [1,1..]
