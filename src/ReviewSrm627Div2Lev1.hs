@@ -1,14 +1,14 @@
 module ReviewSrm627Div2Lev1 where
 import qualified Data.Map as M
 
-updateMap m l  = M.insertWith (+) l 1 m
+updateMap tbl s  = M.insertWith (+) s 1 tbl
 
-howManySquares ls =
-        last
-        $ map    sum              
-        $ map    (map (\x-> div x 4))
-        $ map    M.elems             
-        $ scanl  updateMap M.empty ls 
+howManySquares xs = last
+    $ map    sum
+    $ map    (map (\x-> div x 4))
+    $ map    M.elems
+    $ scanl  updateMap M.empty 
+    $ xs
 
 main = do
     print $ howManySquares [1,1,2,2,1,1,2]

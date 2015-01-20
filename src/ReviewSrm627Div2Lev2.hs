@@ -1,23 +1,23 @@
 module ReviewSrm627Div2Lev2 where
 
-import Data.List
 import Data.Tuple
 import qualified Data.Map as M
 
-updateState m c   = M.insertWith (+) c 1 m
+updateState tbl ch = M.insertWith (+) ch 1 tbl
 
-compareSwap v1 v2 = compare (swap v1) (swap v2)
+toHappy total num ch | div total 2 < num = ch
+                     | otherwise         = '.'
 
-toHappyLetter (total, (c, count)) | div total 2 < count = c
-                                  | otherwise           = '.'
-
-getHappyLetter cs = 
-          last
-        $ map   toHappyLetter
-        $ zip   [0,1..]
-        $ map   (maximumBy compareSwap)
-        $ map   (M.toList)
-        $ scanl updateState M.empty cs
+getHappyLetter cs = last
+    $ map   toHappy'
+    $ zip   [0,1..]
+    $ map   maximum
+    $ map   (map swap)
+    $ map   M.toList
+    $ scanl updateState M.empty 
+    $ cs
+    where 
+      toHappy' (total,(ch, num)) = toHappy total ch num 
 
 main = do
     print $ getHappyLetter "aacaa"
