@@ -42,8 +42,9 @@ manySquares' xs =
     M.map   (/4)        $
     M.fromListWith (+)  $
     zip xs [1,1..]
--- or
+------ or ------
 manySquares'' xs =
     M.fold (\v acc-> (div v 4) + acc) 0 $
     M.fromListWith (+)                  $
     zip xs [1,1..]
+-- end of batch-job ----------------------------------

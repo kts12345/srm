@@ -15,7 +15,7 @@ handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch))
 toHappy total num ch | total < (2*num) = ch
                      | otherwise       = '.'
 ------------------------------------------------------
-happyLetter xs = 
+happyLetter''' xs = 
     last                             $
     map   toHappy'                   $
     zip   [0,1..]                    $
@@ -28,7 +28,6 @@ main = do
     print $ happyLetter "dcdjx"
     print $ happyLetter "bcbbbbba"
     print $ happyLetter "aabc"
-    print $ uncurry max (2, 3)
 {- Output
  'a'
  '.'
@@ -37,8 +36,17 @@ main = do
 -}
 ------------------------------------------------------
 -- if you need more simple code for batch-job.
+happyLetter xs =
+    (\(n,c)-> if 2*n < length xs then '.' else c) $
+    maximum                                       $
+    map swap                                      $
+    M.toList                                      $
+    M.fromListWith (+)                            $
+    zip xs [1,1..]
+------ or ------
 happyLetter' xs =
     (\m->if m == M.empty then '.' else fst (M.elemAt 0 m)) $
     M.filter ( > div (length xs) 2)                        $
     M.fromListWith (+)                                     $
     zip xs [1,1..]
+-- end of batch-job ----------------------------------
