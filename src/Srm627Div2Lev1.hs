@@ -9,14 +9,15 @@ handler table stick
     | otherwise  = (0, M.insert stick (cnt+1) table)
       where cnt  =  M.findWithDefault 0 stick table
 ------------------------------------------------------
-manySquares xs = last           $ -- 4.                                                                 1
-    scanl (+)       0           $ -- 3.[ 0       ,  0       ,  0           ,  0,             1       ,  1        ]
-    map   fst                   $ -- 2.[ 0       ,  0       ,  0           ,  0,          ,  1       ,  0        ]
-    scanl handler' (0, M.empty) $ -- 1.[(0,"1:1"), (0,"1:2"), (0,"1:2,5:1"), (0,"1:3,5:1"), (1,"5:1"), (0, "5:2")]
-    xs                            -- 0.[  1     ,    1    ,     5          ,   1          ,   1       ,  5       ]
-    where handler' (_, t) = handler t -- sytax adaptor
+manySquares xs = last               $ -- 4.                                                                 1
+        scanl (+)       0           $ -- 3.[ 0       ,  0       ,  0           ,  0,             1       ,  1        ]
+        map   fst                   $ -- 2.[ 0       ,  0       ,  0           ,  0,          ,  1       ,  0        ]
+        scanl handler' (0, M.empty) $ -- 1.[(0,"1:1"), (0,"1:2"), (0,"1:2,5:1"), (0,"1:3,5:1"), (1,"5:1"), (0, "5:2")]
+        xs                            -- 0.[  1     ,    1    ,     5          ,   1          ,   1       ,  5       ]
+    where
+        handler' (_, t) = handler t -- sytax adaptor
 ------------------------------------------------------
-main = do    
+main = do
     print $ manySquares  [1,1,2,2,1,1,2]
     print $ manySquares  [3,1,4,4,4,10,10,10,10]
     print $ manySquares  [1,2,3,4,1,2,3,4,1,2,3,1,2,3,4,1,2,3,3,3]
