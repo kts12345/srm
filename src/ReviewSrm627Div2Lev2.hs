@@ -3,7 +3,7 @@ module ReviewSrm627Div2Lev2 where
 import Data.Tuple
 import qualified Data.Map as M
 
-updateState tbl ch = M.insertWith (+) ch 1 tbl
+countTable tbl key = M.insertWith (+) key 1 tbl
 
 toHappy total num ch | div total 2 < num = ch
                      | otherwise         = '.'
@@ -14,10 +14,10 @@ getHappyLetter cs = last
     $ map   maximum
     $ map   (map swap)
     $ map   M.toList
-    $ scanl updateState M.empty 
+    $ scanl countTable M.empty 
     $ cs
     where 
-      toHappy' (total,(ch, num)) = toHappy total ch num 
+      toHappy' (total,(num, ch)) = toHappy total num ch 
 
 main = do
     print $ getHappyLetter "aacaa"
