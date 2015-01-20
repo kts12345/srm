@@ -1,13 +1,13 @@
 module ReviewSrm627Div2Lev1 where
 import qualified Data.Map as M
 
-updateMap tbl s  = M.insertWith (+) s 1 tbl
+countTable tbl key = M.insertWith (+) key 1 tbl
 
 howManySquares xs = last
     $ map    sum
     $ map    (map (\x-> div x 4))
     $ map    M.elems
-    $ scanl  updateMap M.empty 
+    $ scanl  countTable M.empty 
     $ xs
 
 main = do
