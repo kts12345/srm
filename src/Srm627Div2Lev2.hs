@@ -38,10 +38,7 @@ main = do
 ------------------------------------------------------
 -- if you need more simple code for batch-job.
 happyLetter xs =
-    (\l (n,c) -> if 2*n > l then c else '.')
-    (length xs)        $
-    maximum            $
-    map swap           $
-    M.toList           $
-    M.fromListWith (+) $
+    (\m->if m == M.empty then '.' else fst (M.elemAt 0 m)) $
+    M.filter ( > div (length xs) 2)                        $
+    M.fromListWith (+)                                     $
     zip xs [1,1..]

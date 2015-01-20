@@ -38,10 +38,9 @@ main = do
 ------------------------------------------------------
 -- if you need more simple code for batch-job.
 manySquares' xs =
-    sum                $
-    map truncate       $
-    map (/4)           $
-    M.elems            $
+    M.fold (+) 0       $
+    M.map  truncate    $
+    M.map  (/4)        $
     M.fromListWith (+) $
     zip xs [1,1..]
 
