@@ -3,16 +3,18 @@
 module Srm627Div2Lev2 where    
 ------------------------------------------------------
 import qualified Data.Map as M
+import Data.Maybe
 ------------------------------------------------------
 handler (maxLetter, maxCnt, table) letter
-   | cnt < maxCnt = (maxLetter, maxCnt, table')
-   | otherwise    = (letter,    cnt,    table')
-     where
-           cnt    = M.findWithDefault 0 letter table + 1
-           table' = M.insert letter cnt table
+            | cnt < maxCnt = (maxLetter, maxCnt, table')
+            | otherwise    = (letter,    cnt,    table')
+    where
+        table' = M.insert letter cnt table
+        cnt    = fromJust (M.lookup letter table')
+       
 ------------------------------------------------------
-toHappy len letter cnt | (2*cnt) > len = letter
-                        | otherwise     = '.'
+toHappy total letter cnt | (2*cnt) > total = letter
+                         | otherwise       = '.'
 ------------------------------------------------------
 happyLetter xs = last                   $
         map   toHappy'                  $
@@ -20,8 +22,7 @@ happyLetter xs = last                   $
         scanl handler ('a', 0, M.empty) $
         xs
     where
-        toHappy' (len, (letter, cnt, _)) = toHappy len letter cnt
-
+        toHappy' (total, (letter, cnt, _)) = toHappy total letter cnt
 ------------------------------------------------------
 main = do 
     print $ happyLetter "aacaaa"
