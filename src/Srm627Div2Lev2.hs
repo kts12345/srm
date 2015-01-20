@@ -4,6 +4,7 @@ module Srm627Div2Lev2 where
 ------------------------------------------------------
 import qualified Data.Map as M
 import Data.Maybe
+import Data.Tuple
 ------------------------------------------------------
 handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch)) 
     where 
@@ -14,7 +15,7 @@ handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch))
 toHappy total num ch | total < (2*num) = ch
                      | otherwise       = '.'
 ------------------------------------------------------
-happyLetter xs = 
+happyLetter' xs = 
     last                             $
     map   toHappy'                   $
     zip   [0,1..]                    $
@@ -27,3 +28,20 @@ main = do
     print $ happyLetter "dcdjx"
     print $ happyLetter "bcbbbbba"
     print $ happyLetter "aabc"
+    print $ uncurry max (2, 3)
+{- Output
+ 'a'
+ '.'
+ 'b'
+ '.'
+-}
+------------------------------------------------------
+-- if you need more simple code for batch-job.
+happyLetter xs =
+    (\l (n,c) -> if 2*n > l then c else '.')
+    (length xs)        $
+    maximum            $
+    map swap           $
+    M.toList           $
+    M.fromListWith (+) $
+    zip xs [1,1..]
