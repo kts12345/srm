@@ -5,10 +5,11 @@ module Srm627Div2Lev2 where
 import qualified Data.Map as M
 import Data.Maybe
 ------------------------------------------------------
-handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch)) where 
-    (old, tbl') = M.insertLookupWithKey (\_ _ o -> o+1) ch 1 tbl
-    num | isJust old = 1 + fromJust old
-        | otherwise  = 1
+handler (tbl, (numMx, chMx)) ch = (tbl', max (numMx, chMx) (num, ch)) 
+    where 
+        (old, tbl') = M.insertLookupWithKey (\_ _ o -> o+1) ch 1 tbl
+        num | isJust old = 1 + fromJust old
+            | otherwise  = 1
 ------------------------------------------------------
 toHappy total num ch | total < (2*num) = ch
                      | otherwise       = '.'
