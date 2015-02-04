@@ -25,7 +25,7 @@ main = do
 ------------------------------------------------------
 -- if you need another code for batch-job. O(n)
 sumOfPower' :: [Int] -> Int
-sumOfPower' xs = sum.map (\(a,b,c)->a*b*c)   $
+sumOfPower' xs = sum.map (\(a,b,c)->a*b*c) $
                  zip3  [1..n] [n,(n-1)..1] $
                  xs
        where n = length xs
